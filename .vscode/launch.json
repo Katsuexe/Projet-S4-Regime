@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+
+
+    "configurations": [
+        {
+            "name": "Launch Integrated Browser",
+            "request": "launch",
+            "type": "editor-browser",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "CI4: Server",
+            "type": "node-terminal",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/src",
+            "command": "php spark serve"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "CI4: Server + Browser",
+            "configurations": ["CI4: Server", "Launch Integrated Browser"],
+            "stopOnEntry": false
+        }
+    ]
+}

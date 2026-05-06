@@ -1,63 +1,55 @@
-# Projet PHP / CodeIgniter 4
+# Application de Gestion Regime Alimentaire
 
-Ce dépôt contient un projet PHP basé sur CodeIgniter 4. Il utilise des vues PHP directes et ne dépend pas de Node.js pour l'automatisation ou le build.
+[![PHP Version](https://img.shields.io/badge/PHP-8.2+-blue.svg)](https://php.net)
+[![CodeIgniter](https://img.shields.io/badge/CodeIgniter-4.5+-red.svg)](https://codeigniter.com)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0+-orange.svg)](https://mysql.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Installation
+Une application web de gestion de regimes alimentaires developpee avec CodeIgniter 4.
 
-1. Aller dans le dossier `src` :
+## Technologies Utilisees
 
-   ```bash
-   cd src
-   ```
-2. Installer les dépendances PHP :
+- Backend : PHP 8.2+, CodeIgniter 4.5+
+- Base de donnees : MySQL 8.0+
+- Frontend : Bootstrap 5, JavaScript ES6+
+- Graphiques : Chart.js
+- PDF : jsPDF / DomPDF
 
-   ```bash
-   composer install
-   ```
-3. Copier le fichier d'environnement :
+## Prerequis
 
-   ```bash
-   copy env .env
-   ```
+- PHP 8.2 ou superieur
+- MySQL 8.0 ou superieur
+- Composer
 
-   puis adapter les valeurs de base de données et l'URL.
-4. Lancer les migrations et, si nécessaire, les seeds :
+## Installation Rapide
 
-   ```bash
-   php spark migrate
-   php spark db:seed DatabaseSeeder
-   ```
-5. Démarrer le serveur de développement :
+```bash
+git clone https://github.com/votre-username/projet-regime.git
+cd projet-regime/src
+composer install
+cp env .env
+# Editer .env avec vos parametres de base de donnees
+php spark migrate
+php spark serve
+```
 
-   ```bash
-   php spark serve
-   ```
+Voir [doc/installation.md](doc/installation.md) pour les details complets.
 
-## Points importants
+## Documentation
 
-- Ne jamais committer le fichier `.env`.
-- `src/composer.json` est le fichier de dépendances PHP.
-- Les vues sont rendues directement en PHP, sans build JavaScript.
+- [Informations du projet](doc/project.md)
+- [Fonctionnalites et guide d'utilisation](doc/features.md)
+- [Installation detaillee](doc/installation.md)
+- [Schema base de donnees](doc/database.md)
 
-## Recommandations Git
+## Securite
 
-- Vérifier que `.gitignore` contient bien :
+- Authentification : Sessions PHP avec hash securise
+- Validation : Regles strictes sur tous les formulaires
+- Protection XSS : Echappement automatique des vues
+- CSRF : Protection activee sur les formulaires critiques
+- Filtrage : Middleware pour acces admin/utilisateur
 
-  - `/vendor/`
-  - `/writable/`
-  - `.env`
-  - `.vscode/`
-- Utiliser `.gitattributes` pour normaliser les fins de ligne.
-- Utiliser `.editorconfig` pour uniformiser l'indentation.
+## Licence
 
-## Structure utile
-
-- `src/app/` : code applicatif PHP
-- `src/public/` : point d'entrée web, CSS, JS statique
-- `src/database/` : migrations et seeds
-- `src/env` : modèle d'environnement
-
-
-
-
----
+Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de details.

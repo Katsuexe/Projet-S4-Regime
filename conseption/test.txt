@@ -1,3 +1,0 @@
-Nouveau test direct : je modifie encore une fois le fichier.
-Ce fichier reste un exemple de texte créé directement.
-Test de réécriture effectué avec succès.

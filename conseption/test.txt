@@ -1,3 +1,3 @@
-Ceci est un test de contenu direct.
-Le fichier est modifié à nouveau sans commande externe.
-Ceci confirme que l'écriture directe fonctionne.
+Nouveau test direct : je modifie encore une fois le fichier.
+Ce fichier reste un exemple de texte créé directement.
+Test de réécriture effectué avec succès.

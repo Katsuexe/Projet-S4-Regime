@@ -65,3 +65,5 @@ composer.lock
 *.tmp
 *.bak
 *.backup
+
+conseption/Passwords.csv

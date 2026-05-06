@@ -1,0 +1,66 @@
+# Auto detect text files and normalize line endings to LF
+* text=auto
+
+# PHP
+*.php text eol=lf
+*.phps text eol=lf
+
+# Batch
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.com text eol=crlf
+*.exe binary
+
+# Bash
+*.sh text eol=lf
+*.bash text eol=lf
+
+# JSON
+*.json text eol=lf
+*.jsonc text eol=lf
+
+# YAML
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Markdown
+*.md text eol=lf
+*.markdown text eol=lf
+
+# HTML & CSS
+*.html text eol=lf
+*.htm text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.sass text eol=lf
+*.less text eol=lf
+
+# JavaScript
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+
+# SQL
+*.sql text eol=lf
+
+# Images
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.svg binary
+*.ico binary
+*.webp binary
+
+# Videos
+*.mp4 binary
+*.webm binary
+*.ogv binary
+
+# Archives
+*.zip binary
+*.rar binary
+*.7z binary
+*.gz binary
+*.tar binary

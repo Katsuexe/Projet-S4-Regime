@@ -1,0 +1,67 @@
+# CodeIgniter 4
+
+# Local environment config
+.env
+.env.*.local
+.env.*.php
+
+# Composr
+/vendor/
+
+# IDE
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Build & Logs
+/writable/logs/*
+!/writable/logs/.gitkeep
+/writable/cache/*
+!/writable/cache/.gitkeep
+/writable/session/*
+!/writable/session/.gitkeep
+/writable/uploads/*
+!/writable/uploads/.gitkeep
+/writable/debugbar/*
+!/writable/debugbar/.gitkeep
+
+# Testing
+/tests/_output/
+.phpunit.result.cache
+coverage.xml
+
+# Node modules
+/node_modules/
+npm-debug.log
+yarn-error.log
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# PHPUnit
+phpunit.xml
+
+# Local development
+spark.local
+.env.local
+composer.lock
+
+# Mac
+.AppleDouble
+.LSOverride
+._*
+
+# Temp files
+*.tmp
+*.bak
+*.backup

@@ -1,1 +1,3 @@
-réécriture
+Test de faux push direct.
+Ce fichier ne reflète pas un vrai push Git.
+Il sert uniquement à tester la création de texte localement.

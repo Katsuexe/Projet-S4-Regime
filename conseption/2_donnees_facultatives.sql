@@ -5,13 +5,13 @@
 
 USE `regime_s4`;
 
--- Utilisateurs (mot de passe en clair : Azerty123!)
+
 INSERT INTO `users` (`nom`, `prenom`, `email`, `password`, `genre`, `is_gold`, `solde`) VALUES
-  ('Rakoto',    'Jean',      'jean.rakoto@mail.mg',    '$2y$12$LpQX3xCpJh8ZT1oLqJ4Y4.k8cE2TvYzUbMCXEdHdL5WRHXqVlJi6y', 'homme', 0,  50.00),
-  ('Rasoa',     'Marie',     'marie.rasoa@mail.mg',    '$2y$12$LpQX3xCpJh8ZT1oLqJ4Y4.k8cE2TvYzUbMCXEdHdL5WRHXqVlJi6y', 'femme', 1,  120.00),
-  ('Ramiandri', 'Paul',      'paul.ramiandri@mail.mg', '$2y$12$LpQX3xCpJh8ZT1oLqJ4Y4.k8cE2TvYzUbMCXEdHdL5WRHXqVlJi6y', 'homme', 0,  30.00),
-  ('Ravelo',    'Sophie',    'sophie.ravelo@mail.mg',  '$2y$12$LpQX3xCpJh8ZT1oLqJ4Y4.k8cE2TvYzUbMCXEdHdL5WRHXqVlJi6y', 'femme', 0,  75.50),
-  ('Andriana',  'Christophe','chris.andriana@mail.mg', '$2y$12$LpQX3xCpJh8ZT1oLqJ4Y4.k8cE2TvYzUbMCXEdHdL5WRHXqVlJi6y', 'homme', 1, 200.00);
+  ('Rakoto',    'Jean',      'jean.rakoto@mail.mg',    '$2y$10$Fp1WCzC/ksEBRnd8tMv3JO7e/28g8tkSvmDZ6MunlVKEmukwE44Oa', 'homme', 0,  50.00),
+  ('Rasoa',     'Marie',     'marie.rasoa@mail.mg',    '$2y$10$gJ3jd9DWTSNWgCL0WRlc0untwFQum15L0X52LHOPWT3rdNxVKVBL2', 'femme', 1,  120.00),
+  ('Ramiandri', 'Paul',      'paul.ramiandri@mail.mg', '$2y$10$McaBMvrrrLg2OeHc8tKfP.Ks9hPJ8/CBRUzSA5e/bOmSq8RAQBi5u', 'homme', 0,  30.00),
+  ('Ravelo',    'Sophie',    'sophie.ravelo@mail.mg',  '$2y$10$/yVfbDodJCCL/h25QaPijeJU9kqoWy5U.AWnC/k6itsfFyUiPXPV.', 'femme', 0,  75.50),
+  ('Andriana',  'Christophe','chris.andriana@mail.mg', '$2y$10$zRp8cyiXBpDWBpaJdTKhCu2DEl68jnU4itGARzhPcYthXmjboJOO6', 'homme', 1, 200.00);
 
 -- Données de santé
 INSERT INTO `user_sante` (`user_id`, `taille`, `poids`, `objectif`) VALUES

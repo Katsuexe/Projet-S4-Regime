@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulaire d'inscription</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form action="/inscription" method="post" novalidate id="form-inscription">
+      <h1>Créer un compte</h1>
+      <p>
+        Les champs marqués d'un <span aria-hidden="true">*</span> sont
+        obligatoires.
+      </p>
+
+      <!-- SECTION 1 : Identité -->
+      <fieldset>
+        <legend>Identité</legend>
+
+        <label for="nom">Nom *</label>
+        <input
+          type="text"
+          id="nom"
+          name="nom"
+          autocomplete="family-name"
+          required
+        />
+        <span class="erreur" id="erreur-nom" aria-live="polite"></span>
+
+        <label for="prenom">Prénom *</label>
+        <input
+          type="text"
+          id="prenom"
+          name="prenom"
+          autocomplete="given-name"
+          required
+        />
+        <span class="erreur" id="erreur-prenom" aria-live="polite"></span>
+
+        <label for="ddn">Date de naissance *</label>
+        <input type="date" id="ddn" name="ddn" autocomplete="bday" required />
+        <span class="erreur" id="erreur-ddn" aria-live="polite"></span>
+      </fieldset>
+
+      <!-- SECTION 2 : Connexion -->
+      <fieldset>
+        <legend>Connexion</legend>
+
+        <label for="email">Adresse email *</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          autocomplete="email"
+          required
+          inputmode="email"
+        />
+        <span class="erreur" id="erreur-email" aria-live="polite"></span>
+
+        <label for="password">Mot de passe *</label>
+        <div class="champ-password">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="new-password"
+            required
+            minlength="8"
+          />
+          <button
+            type="button"
+            id="toggle-password"
+            aria-label="Afficher le mot de passe"
+          >
+            👁
+          </button>
+        </div>
+        <span class="aide">Minimum 8 caractères.</span>
+        <span class="erreur" id="erreur-password" aria-live="polite"></span>
+        
+
+        <label for="password-confirm">Confirmation du mot de passe *</label>
+        <div class="champ-password">
+          <input
+            type="password"
+            id="password-confirm"
+            name="password-confirm"
+            autocomplete="new-password"
+            required
+            minlength="8"
+          />
+          <button
+            type="button"
+            id="toggle-password-confirm"
+            aria-label="Afficher le mot de passe de confirmation"
+          >
+            👁
+          </button>
+        </div>
+        <span class="erreur" id="erreur-password-confirm" aria-live="polite"></span>
+
+      </fieldset>
+
+      <!-- SECTION 3 : Localisation -->
+      <fieldset>
+        <legend>
+          Localisation <span class="optionnel">(facultatif)</span>
+        </legend>
+
+        <label for="pays">Pays</label>
+        <select id="pays" name="pays" autocomplete="country">
+          <!-- Les options sont générées depuis form-data.json par script.js -->
+        </select>
+
+        <div class="groupe-tel">
+          <label for="tel-prefix" class="visually-hidden">Indicatif</label>
+          <input
+            id="tel-prefix"
+            name="tel-prefix"
+            type="text"
+            inputmode="tel"
+            placeholder="+33"
+            aria-describedby="aide-tel"
+          />
+          <label for="tel" class="visually-hidden">Numéro</label>
+          <input
+            id="tel"
+            name="tel"
+            type="tel"
+            inputmode="tel"
+            placeholder="612345678"
+            aria-describedby="aide-tel"
+          />
+        </div>
+      </fieldset>
+
+      <button type="submit" id="btn-submit">Créer mon compte</button>
+    </form>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

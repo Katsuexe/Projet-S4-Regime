@@ -24,7 +24,7 @@ Une application web de gestion de regimes alimentaires developpee avec CodeIgnit
 ## Installation Rapide
 
 ```bash
-git clone https://github.com/votre-username/projet-regime.git
+git clone https://github.com/Katsuexe/projet-regime.git
 cd projet-regime/src
 composer install
 cp env .env
@@ -38,7 +38,7 @@ Voir [doc/installation.md](doc/installation.md) pour les details complets.
 ## Documentation
 
 - [Informations du projet](doc/project.md)
-- [Fonctionnalites et guide d'utilisation](doc/features.md)
+- [Fonctionnalites et guide d&#39;utilisation](doc/features.md)
 - [Installation detaillee](doc/installation.md)
 - [Schema base de donnees](doc/database.md)
 

@@ -67,3 +67,5 @@ composer.lock
 *.backup
 
 conseption/Passwords.csv
+
+src/writable/

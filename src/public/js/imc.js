@@ -2,33 +2,53 @@ document.addEventListener('DOMContentLoaded', () => {
   const taille = document.getElementById('taille');
   const poids = document.getElementById('poids');
   const output = document.getElementById('imc-preview-value');
+  const live = document.getElementById('imc-live');
+  const catLive = document.getElementById('imc-cat-live');
 
   if (!taille || !poids || !output) {
     return;
   }
 
-  const renderImc = () => {
+  const renderImc = async () => {
     const tailleValue = parseFloat(taille.value);
     const poidsValue = parseFloat(poids.value);
 
     if (!tailleValue || !poidsValue || tailleValue <= 0) {
-      output.textContent = 'Renseignez votre taille et votre poids pour voir une estimation.';
+      output.textContent = 'Renseignez votre taille et votre poids.';
       return;
     }
 
-    const tailleMetre = tailleValue / 100;
-    const imc = poidsValue / (tailleMetre * tailleMetre);
-    let categorie = 'Poids normal';
+    try {
+      const response = await fetch('/ajax/imc', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify({
+          taille: tailleValue,
+          poids: poidsValue,
+        }),
+      });
 
-    if (imc < 18.5) {
-      categorie = 'Insuffisance ponderale';
-    } else if (imc >= 25 && imc < 30) {
-      categorie = 'Surpoids';
-    } else if (imc >= 30) {
-      categorie = 'Obesite';
+      if (!response.ok) {
+        throw new Error('IMC request failed');
+      }
+
+      const data = await response.json();
+      output.textContent = `IMC estime : ${data.imc} - ${data.categorie} - Poids ideal : ${data.poids_ideal} kg`;
+
+      if (live) {
+        live.textContent = data.imc;
+      }
+
+      if (catLive) {
+        catLive.textContent = data.categorie;
+        catLive.className = `imc-cat ${data.imc < 18.5 || data.imc >= 30 ? 'obese' : (data.imc < 25 ? 'normal' : 'surpoid')}`;
+      }
+    } catch (error) {
+      output.textContent = 'Impossible de calculer l IMC pour le moment.';
     }
-
-    output.textContent = `IMC estime: ${imc.toFixed(2)} - ${categorie}`;
   };
 
   taille.addEventListener('input', renderImc);

@@ -23,5 +23,7 @@ class AuthFilter implements FilterInterface
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
+        // Pas de post-traitement: filtre read-only pour proteger les routes.
+        unset($request, $response, $arguments);
     }
 }

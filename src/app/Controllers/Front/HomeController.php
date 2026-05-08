@@ -18,6 +18,6 @@ class HomeController extends BaseController
             });
         }
 
-        return redirect()->to('/inscription/etape1');
+        return redirect()->to('/connexion');
     }
 }

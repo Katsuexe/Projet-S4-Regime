@@ -19,10 +19,64 @@
   --input-bg: #fafbfc;
   --white: #ffffff;
   --card-shadow: 0 20px 48px rgba(15, 23, 42, 0.08);
+  /* Scrollbar variables (utilisées plus bas) */
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb: rgba(79, 126, 248, 0.22);
+  --scrollbar-thumb-hover: rgba(79, 126, 248, 0.36);
+  --scrollbar-width: 12px;
+  --scrollbar-radius: 999px;
 }
 
 *, *::before, *::after {
   box-sizing: border-box;
+}
+
+/* Scrollbar global — track transparent; thumb visible only while scrolling/hover */
+html { scrollbar-gutter: stable; }
+
+/* Default: hide thumb (auto-hide) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+/* WebKit browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: var(--scrollbar-radius);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: var(--scrollbar-radius);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  opacity: 0;
+  transition: opacity 220ms ease, background-color 160ms ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  opacity: 1;
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+/* Show scrollbar thumb while scrolling or when hovering near/over scrollable content */
+html.is-scrolling *::-webkit-scrollbar-thumb,
+*:hover::-webkit-scrollbar-thumb,
+.scrollable.is-scrolling::-webkit-scrollbar-thumb,
+.scrollable:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
+
+/* Firefox: show thumb when scrolling */
+html.is-scrolling * {
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
+@media (max-width: 640px) {
+  :root { --scrollbar-width: 8px; }
 }
 
 body.auth-page {
@@ -45,6 +99,9 @@ body.auth-page {
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  /* Ensure wrapper fills viewport so child .auth-form can be vertically centered */
+  min-height: calc(100vh - 10px);
 }
 
 .auth-form,
@@ -54,6 +111,8 @@ body.auth-page {
   border-radius: 18px;
   box-shadow: var(--card-shadow);
   padding: 32px;
+  /* Ajout d'espacement vertical (haut/bas) pour les formulaires */
+  margin: 50px 0;
 }
 
 .auth-form {
@@ -194,6 +253,17 @@ select:focus {
 .flash-success {
   background: var(--valid-bg);
   color: var(--valid);
+}
+
+/* Hide scrollbar with pure CSS (global override) */
+html, body, * {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+/* WebKit */
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .flash-error {

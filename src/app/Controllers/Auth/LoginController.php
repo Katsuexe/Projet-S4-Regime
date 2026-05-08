@@ -8,13 +8,15 @@ use Config\AuthGroups;
 
 class LoginController extends BaseController
 {
+    private const LOGIN_VIEW = 'auth/login';
+
     public function index()
     {
         if ($redirect = $this->redirectIfAuthenticated()) {
             return $redirect;
         }
 
-        return view('auth/login', [
+        return view(self::LOGIN_VIEW, [
             'title' => 'Connexion',
             'space' => 'sportif',
         ]);
@@ -31,7 +33,7 @@ class LoginController extends BaseController
             return $redirect;
         }
 
-        return view('auth/login', [
+        return view(self::LOGIN_VIEW, [
             'title' => 'Connexion administrateur',
             'space' => 'admin',
         ]);
@@ -48,7 +50,7 @@ class LoginController extends BaseController
             return $redirect;
         }
 
-        return view('auth/login', [
+        return view(self::LOGIN_VIEW, [
             'title' => 'Connexion coach',
             'space' => 'coach',
         ]);
@@ -73,7 +75,7 @@ class LoginController extends BaseController
         ]);
         session()->destroy();
 
-        return redirect()->to('/inscription/etape1')->with('success', 'Vous etes deconnecte.');
+        return redirect()->to('/connexion')->with('success', 'Vous etes deconnecte.');
     }
 
     public function adminLogout()

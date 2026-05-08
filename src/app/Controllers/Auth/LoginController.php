@@ -61,9 +61,19 @@ class LoginController extends BaseController
 
     public function logout()
     {
+        session()->remove([
+            'user_id',
+            'user_nom',
+            'user_prenom',
+            'user_email',
+            'genre',
+            'is_gold',
+            'auth_role',
+            'poids_ideal',
+        ]);
         session()->destroy();
 
-        return redirect()->to('/connexion')->with('success', 'Vous etes deconnecte.');
+        return redirect()->to('/inscription/etape1')->with('success', 'Vous etes deconnecte.');
     }
 
     public function adminLogout()

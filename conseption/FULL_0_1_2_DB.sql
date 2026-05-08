@@ -26,6 +26,7 @@ CREATE TABLE `users` (
   `prenom`     VARCHAR(100)     NOT NULL,
   `email`      VARCHAR(150)     NOT NULL,
   `password`   VARCHAR(255)     NOT NULL,
+  `role`       ENUM('sportif','admin','coach') NOT NULL DEFAULT 'sportif',
   `genre`      ENUM('homme','femme') NOT NULL,
   `is_gold`    TINYINT(1)       NOT NULL DEFAULT 0,
   `solde`      DECIMAL(10,2)    NOT NULL DEFAULT 0.00,
@@ -109,7 +110,7 @@ CREATE TABLE `codes` (
   UNIQUE KEY `uq_codes_code` (`code`),
   CONSTRAINT `fk_codes_user`
     FOREIGN KEY (`used_by`) REFERENCES `users` (`id`)
-    ON DELETE SET NULL ON UPDATE CASCADE
+    ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 7. user_regimes
@@ -126,13 +127,13 @@ CREATE TABLE `user_regimes` (
   `created_at`      TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_ur_user`
-    FOREIGN KEY (`user_id`)         REFERENCES `users`         (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`user_id`)         REFERENCES `users`         (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_ur_regime`
-    FOREIGN KEY (`regime_id`)       REFERENCES `regimes`       (`id`) ON DELETE RESTRICT,
+    FOREIGN KEY (`regime_id`)       REFERENCES `regimes`       (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_ur_duree`
-    FOREIGN KEY (`regime_duree_id`) REFERENCES `regime_durees` (`id`) ON DELETE RESTRICT,
+    FOREIGN KEY (`regime_duree_id`) REFERENCES `regime_durees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_ur_activite`
-    FOREIGN KEY (`activite_id`)     REFERENCES `activites`     (`id`) ON DELETE SET NULL
+    FOREIGN KEY (`activite_id`)     REFERENCES `activites`     (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 8. parametres
@@ -188,12 +189,14 @@ INSERT INTO `activites` (`id`, `nom`, `description`, `calories_h`, `duree_min`) 
 
 -- -----------------------------------------------------------------------------
 
-INSERT INTO `users` (`id`, `nom`, `prenom`, `email`, `password`, `genre`, `is_gold`, `solde`) VALUES
-(1, 'Rakoto',    'Jean',      'jean.rakoto@mail.mg',    '$2y$10$Fp1WCzC/ksEBRnd8tMv3JO7e/28g8tkSvmDZ6MunlVKEmukwE44Oa', 'homme', 0,  50.00),
-(2, 'Rasoa',     'Marie',     'marie.rasoa@mail.mg',    '$2y$10$gJ3jd9DWTSNWgCL0WRlc0untwFQum15L0X52LHOPWT3rdNxVKVBL2', 'femme', 1, 120.00),
-(3, 'Ramiandri', 'Paul',      'paul.ramiandri@mail.mg', '$2y$10$McaBMvrrrLg2OeHc8tKfP.Ks9hPJ8/CBRUzSA5e/bOmSq8RAQBi5u', 'homme', 0,  30.00),
-(4, 'Ravelo',    'Sophie',    'sophie.ravelo@mail.mg',  '$2y$10$/yVfbDodJCCL/h25QaPijeJU9kqoWy5U.AWnC/k6itsfFyUiPXPV.', 'femme', 0,  75.50),
-(5, 'Andriana',  'Christophe','chris.andriana@mail.mg', '$2y$10$zRp8cyiXBpDWBpaJdTKhCu2DEl68jnU4itGARzhPcYthXmjboJOO6', 'homme', 1, 200.00);
+INSERT INTO `users` (`id`, `nom`, `prenom`, `email`, `password`, `role`, `genre`, `is_gold`, `solde`) VALUES
+(1, 'Rakoto',    'Jean',       'jean.rakoto@mail.mg',    '$2y$10$Fp1WCzC/ksEBRnd8tMv3JO7e/28g8tkSvmDZ6MunlVKEmukwE44Oa', 'sportif', 'homme', 0,  50.00),
+(2, 'Rasoa',     'Marie',      'marie.rasoa@mail.mg',    '$2y$10$gJ3jd9DWTSNWgCL0WRlc0untwFQum15L0X52LHOPWT3rdNxVKVBL2', 'sportif', 'femme', 1, 120.00),
+(3, 'Ramiandri', 'Paul',       'paul.ramiandri@mail.mg', '$2y$10$McaBMvrrrLg2OeHc8tKfP.Ks9hPJ8/CBRUzSA5e/bOmSq8RAQBi5u', 'sportif', 'homme', 0,  30.00),
+(4, 'Ravelo',    'Sophie',     'sophie.ravelo@mail.mg',  '$2y$10$/yVfbDodJCCL/h25QaPijeJU9kqoWy5U.AWnC/k6itsfFyUiPXPV.', 'sportif', 'femme', 0,  75.50),
+(5, 'Andriana',  'Christophe', 'chris.andriana@mail.mg', '$2y$10$zRp8cyiXBpDWBpaJdTKhCu2DEl68jnU4itGARzhPcYthXmjboJOO6', 'sportif', 'homme', 1, 200.00),
+(6, 'Admin',     'Systeme',    'admin@regime.local',     '$2y$10$QVmIOwLxQUPZkaiRKzYO1ehBLESWORvQ7lARNKhY0vdfwHWmTQ33q', 'admin',   'homme', 0,   0.00),
+(7, 'Coach',     'Principal',  'coach@regime.local',     '$2y$10$u.HcnV5DjSacjzLUha.Oo.PjkfOu8KHc5lPPRCjoqYdqPjcwimgsy', 'coach',   'femme', 0,   0.00);
 
 INSERT INTO `user_sante` (`user_id`, `taille`, `poids`, `objectif`) VALUES
 (1, 175.00, 85.00, 'reduire'),
@@ -231,7 +234,7 @@ INSERT INTO `user_regimes` (`user_id`, `regime_id`, `regime_duree_id`, `activite
 -- -----------------------------------------------------------------------------
 -- ALTER TABLE `regimes`       AUTO_INCREMENT = 6;
 -- ALTER TABLE `activites`    AUTO_INCREMENT = 6;
--- ALTER TABLE `users`        AUTO_INCREMENT = 6;
+-- ALTER TABLE `users`        AUTO_INCREMENT = 8;
 
 SET FOREIGN_KEY_CHECKS = 1;
 -- =============================================================================

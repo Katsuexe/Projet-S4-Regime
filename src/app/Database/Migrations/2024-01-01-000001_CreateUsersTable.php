@@ -31,6 +31,11 @@ class CreateUsersTable extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'role' => [
+                'type'       => 'ENUM',
+                'constraint' => ['sportif', 'admin', 'coach'],
+                'default'    => 'sportif',
+            ],
             'genre' => [
                 'type'       => 'ENUM',
                 'constraint' => ['homme', 'femme'],

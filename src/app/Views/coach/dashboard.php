@@ -4,9 +4,9 @@
 <section class="auth-wrapper">
     <div class="auth-form auth-panel">
         <div class="auth-header">
-            <p class="auth-kicker">Administration</p>
-            <h1>Tableau de bord admin</h1>
-            <p>Acces restreint pour la gestion de la plateforme.</p>
+            <p class="auth-kicker">Coach</p>
+            <h1>Tableau de bord coach</h1>
+            <p>Acces restreint pour l accompagnement des sportifs.</p>
         </div>
 
         <?= view('partials/flash_messages') ?>
@@ -19,7 +19,7 @@
         </fieldset>
 
         <div class="auth-actions">
-            <a class="secondary-link" href="<?= site_url('espace-securise/admin/sortie') ?>">Se deconnecter</a>
+            <a class="secondary-link" href="<?= site_url('espace-securise/coach/sortie') ?>">Se deconnecter</a>
         </div>
     </div>
 </section>

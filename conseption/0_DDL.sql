@@ -20,6 +20,7 @@ CREATE TABLE `users` (
   `prenom`     VARCHAR(100)     NOT NULL,
   `email`      VARCHAR(150)     NOT NULL,
   `password`   VARCHAR(255)     NOT NULL,
+  `role`       ENUM('sportif','admin','coach') NOT NULL DEFAULT 'sportif',
   `genre`      ENUM('homme','femme') NOT NULL,
   `is_gold`    TINYINT(1)       NOT NULL DEFAULT 0,
   `solde`      DECIMAL(10,2)    NOT NULL DEFAULT 0.00,
@@ -103,7 +104,7 @@ CREATE TABLE `codes` (
   UNIQUE KEY `uq_codes_code` (`code`),
   CONSTRAINT `fk_codes_user`
     FOREIGN KEY (`used_by`) REFERENCES `users` (`id`)
-    ON DELETE SET NULL ON UPDATE CASCADE
+    ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 7. Achats de régimes
@@ -120,13 +121,13 @@ CREATE TABLE `user_regimes` (
   `created_at`      TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_ur_user`
-    FOREIGN KEY (`user_id`)         REFERENCES `users`         (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`user_id`)         REFERENCES `users`         (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_ur_regime`
-    FOREIGN KEY (`regime_id`)       REFERENCES `regimes`       (`id`) ON DELETE RESTRICT,
+    FOREIGN KEY (`regime_id`)       REFERENCES `regimes`       (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_ur_duree`
-    FOREIGN KEY (`regime_duree_id`) REFERENCES `regime_durees` (`id`) ON DELETE RESTRICT,
+    FOREIGN KEY (`regime_duree_id`) REFERENCES `regime_durees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_ur_activite`
-    FOREIGN KEY (`activite_id`)     REFERENCES `activites`     (`id`) ON DELETE SET NULL
+    FOREIGN KEY (`activite_id`)     REFERENCES `activites`     (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 8. Paramètres

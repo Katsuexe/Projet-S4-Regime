@@ -6,12 +6,14 @@
 USE `regime_s4`;
 
 
-INSERT INTO `users` (`nom`, `prenom`, `email`, `password`, `genre`, `is_gold`, `solde`) VALUES
-  ('Rakoto',    'Jean',      'jean.rakoto@mail.mg',    '$2y$10$Fp1WCzC/ksEBRnd8tMv3JO7e/28g8tkSvmDZ6MunlVKEmukwE44Oa', 'homme', 0,  50.00),
-  ('Rasoa',     'Marie',     'marie.rasoa@mail.mg',    '$2y$10$gJ3jd9DWTSNWgCL0WRlc0untwFQum15L0X52LHOPWT3rdNxVKVBL2', 'femme', 1,  120.00),
-  ('Ramiandri', 'Paul',      'paul.ramiandri@mail.mg', '$2y$10$McaBMvrrrLg2OeHc8tKfP.Ks9hPJ8/CBRUzSA5e/bOmSq8RAQBi5u', 'homme', 0,  30.00),
-  ('Ravelo',    'Sophie',    'sophie.ravelo@mail.mg',  '$2y$10$/yVfbDodJCCL/h25QaPijeJU9kqoWy5U.AWnC/k6itsfFyUiPXPV.', 'femme', 0,  75.50),
-  ('Andriana',  'Christophe','chris.andriana@mail.mg', '$2y$10$zRp8cyiXBpDWBpaJdTKhCu2DEl68jnU4itGARzhPcYthXmjboJOO6', 'homme', 1, 200.00);
+INSERT INTO `users` (`id`, `nom`, `prenom`, `email`, `password`, `role`, `genre`, `is_gold`, `solde`) VALUES
+  (1, 'Rakoto',    'Jean',       'jean.rakoto@mail.mg',     '$2y$10$Fp1WCzC/ksEBRnd8tMv3JO7e/28g8tkSvmDZ6MunlVKEmukwE44Oa', 'sportif', 'homme', 0,  50.00),
+  (2, 'Rasoa',     'Marie',      'marie.rasoa@mail.mg',     '$2y$10$gJ3jd9DWTSNWgCL0WRlc0untwFQum15L0X52LHOPWT3rdNxVKVBL2', 'sportif', 'femme', 1, 120.00),
+  (3, 'Ramiandri', 'Paul',       'paul.ramiandri@mail.mg',  '$2y$10$McaBMvrrrLg2OeHc8tKfP.Ks9hPJ8/CBRUzSA5e/bOmSq8RAQBi5u', 'sportif', 'homme', 0,  30.00),
+  (4, 'Ravelo',    'Sophie',     'sophie.ravelo@mail.mg',   '$2y$10$/yVfbDodJCCL/h25QaPijeJU9kqoWy5U.AWnC/k6itsfFyUiPXPV.', 'sportif', 'femme', 0,  75.50),
+  (5, 'Andriana',  'Christophe', 'chris.andriana@mail.mg',  '$2y$10$zRp8cyiXBpDWBpaJdTKhCu2DEl68jnU4itGARzhPcYthXmjboJOO6', 'sportif', 'homme', 1, 200.00),
+  (6, 'Admin',     'Systeme',    'admin@regime.local',      '$2y$10$QVmIOwLxQUPZkaiRKzYO1ehBLESWORvQ7lARNKhY0vdfwHWmTQ33q', 'admin',   'homme', 0,   0.00),
+  (7, 'Coach',     'Principal',  'coach@regime.local',      '$2y$10$u.HcnV5DjSacjzLUha.Oo.PjkfOu8KHc5lPPRCjoqYdqPjcwimgsy', 'coach',   'femme', 0,   0.00);
 
 -- Données de santé
 INSERT INTO `user_sante` (`user_id`, `taille`, `poids`, `objectif`) VALUES

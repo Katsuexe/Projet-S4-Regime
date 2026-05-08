@@ -15,6 +15,7 @@ class UserModel extends Model
         'prenom',
         'email',
         'password',
+        'role',
         'genre',
         'is_gold',
         'solde',

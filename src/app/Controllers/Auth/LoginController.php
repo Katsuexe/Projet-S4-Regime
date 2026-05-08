@@ -4,21 +4,85 @@ namespace App\Controllers\Auth;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
+use Config\AuthGroups;
 
 class LoginController extends BaseController
 {
     public function index()
     {
-        if (session()->get('user_id')) {
-            return redirect()->to('/suggestions');
+        if ($redirect = $this->redirectIfAuthenticated()) {
+            return $redirect;
         }
 
         return view('auth/login', [
             'title' => 'Connexion',
+            'space' => 'sportif',
         ]);
     }
 
     public function login()
+    {
+        return $this->handleLogin('sportif');
+    }
+
+    public function adminIndex()
+    {
+        if ($redirect = $this->redirectIfAuthenticated()) {
+            return $redirect;
+        }
+
+        return view('auth/login', [
+            'title' => 'Connexion administrateur',
+            'space' => 'admin',
+        ]);
+    }
+
+    public function adminLogin()
+    {
+        return $this->handleLogin('admin');
+    }
+
+    public function coachIndex()
+    {
+        if ($redirect = $this->redirectIfAuthenticated()) {
+            return $redirect;
+        }
+
+        return view('auth/login', [
+            'title' => 'Connexion coach',
+            'space' => 'coach',
+        ]);
+    }
+
+    public function coachLogin()
+    {
+        return $this->handleLogin('coach');
+    }
+
+    public function logout()
+    {
+        session()->destroy();
+
+        return redirect()->to('/connexion')->with('success', 'Vous etes deconnecte.');
+    }
+
+    public function adminLogout()
+    {
+        $config = config(AuthGroups::class);
+        session()->destroy();
+
+        return redirect()->to('/' . $config->hiddenLoginRoutes['admin'])->with('success', 'Session administrateur fermee.');
+    }
+
+    public function coachLogout()
+    {
+        $config = config(AuthGroups::class);
+        session()->destroy();
+
+        return redirect()->to('/' . $config->hiddenLoginRoutes['coach'])->with('success', 'Session coach fermee.');
+    }
+
+    private function handleLogin(string $expectedRole)
     {
         $rules = [
             'email'    => 'required|valid_email',
@@ -36,6 +100,12 @@ class LoginController extends BaseController
             return redirect()->back()->withInput()->with('error', 'Adresse email ou mot de passe incorrect.');
         }
 
+        $role = $user['role'] ?? 'sportif';
+
+        if ($role !== $expectedRole) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         session()->set([
             'user_id'     => $user['id'],
             'user_nom'    => $user['nom'],
@@ -43,15 +113,25 @@ class LoginController extends BaseController
             'user_email'  => $user['email'],
             'genre'       => $user['genre'],
             'is_gold'     => (bool) ($user['is_gold'] ?? false),
+            'auth_role'   => $role,
         ]);
 
-        return redirect()->to('/suggestions')->with('success', 'Connexion reussie.');
+        $config = config(AuthGroups::class);
+        $redirect = $config->defaultRedirects[$role] ?? '/';
+
+        return redirect()->to($redirect)->with('success', 'Connexion reussie.');
     }
 
-    public function logout()
+    private function redirectIfAuthenticated()
     {
-        session()->destroy();
+        if (! session()->get('user_id')) {
+            return null;
+        }
 
-        return redirect()->to('/connexion')->with('success', 'Vous etes deconnecte.');
+        $config = config(AuthGroups::class);
+        $role = session()->get('auth_role') ?: 'sportif';
+        $redirect = $config->defaultRedirects[$role] ?? '/';
+
+        return redirect()->to($redirect);
     }
 }

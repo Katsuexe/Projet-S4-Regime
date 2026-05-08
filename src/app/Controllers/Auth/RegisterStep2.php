@@ -51,6 +51,7 @@ class RegisterStep2 extends BaseController
             'prenom'   => $step1['prenom'],
             'email'    => $step1['email'],
             'password' => password_hash($step1['password'], PASSWORD_DEFAULT),
+            'role'     => 'sportif',
             'genre'    => $step1['genre'],
         ], true);
 
@@ -70,6 +71,7 @@ class RegisterStep2 extends BaseController
             'user_nom'    => $profile['nom'],
             'user_prenom' => $profile['prenom'],
             'user_email'  => $profile['email'],
+            'auth_role'   => $profile['role'] ?? 'sportif',
             'genre'       => $profile['genre'],
             'is_gold'     => (bool) ($profile['is_gold'] ?? false),
             'poids_ideal' => $ideal['poids_ideal'],

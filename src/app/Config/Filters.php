@@ -27,6 +27,7 @@ class Filters extends BaseFilters
     public array $aliases = [
         'auth'          => \App\Filters\AuthFilter::class,
         'admin'         => \App\Filters\AdminFilter::class,
+        'coach'         => \App\Filters\CoachFilter::class,
         'csrf'          => CSRF::class,
         'toolbar'       => DebugToolbar::class,
         'honeypot'      => Honeypot::class,
@@ -108,5 +109,9 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [];
+    public array $filters = [
+        'auth' => ['before' => ['profil', 'profil/*', 'objectif', 'objectif/*', 'suggestions', 'suggestions/*', 'portefeuille', 'portefeuille/*']],
+        'admin' => ['before' => ['admin', 'admin/*']],
+        'coach' => ['before' => ['coach', 'coach/*']],
+    ];
 }

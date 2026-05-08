@@ -655,3 +655,18 @@ php spark db:seed DatabaseSeeder
 # Lancer le serveur
 php spark serve
 ```
+
+## 16. Personnaliser la route cachée (Admin / Coach)
+
+Pour plus de sécurité, les pages de connexion pour les comptes `admin` et `coach` sont exposées via des routes "cachées" configurables. Ces routes sont lues depuis `Config\\AuthGroups` et peuvent être définies dans le fichier `.env`.
+
+Exemple à ajouter dans `.env` :
+
+```env
+auth.hiddenAdminRoute=espace-securise/mon-admin-secret/connexion
+auth.hiddenCoachRoute=espace-securise/mon-coach-secret/connexion
+```
+
+Après modification, redémarrez le serveur (`php spark serve`) ou videz le cache si nécessaire : `php spark cache:clear`.
+
+Voir également `src/app/Config/AuthGroups.php` pour les valeurs par défaut.

@@ -17,6 +17,13 @@
 # CI_ENVIRONMENT = production
 
 #--------------------------------------------------------------------
+# AUTH — routes cachées pour admin / coach
+#--------------------------------------------------------------------
+# Exemple : décommenter et personnaliser, puis copier `env` en `.env`
+# auth.hiddenAdminRoute = espace-securise/portail-admin-9xk7/connexion
+# auth.hiddenCoachRoute = espace-securise/portail-coach-4mp2/connexion
+
+#--------------------------------------------------------------------
 # APP
 #--------------------------------------------------------------------
 

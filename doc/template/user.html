@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projet Régime — Template Front Utilisateur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS — Projet Régime
+   Gestalt: Figure/Ground via color contrast
+═══════════════════════════════════════════════ */
+:root {
+  --bg:          #f0ede6;        /* warm cream — fond page */
+  --surface:     #ffffff;        /* cartes */
+  --surface-alt: #f9f7f3;        /* zones secondaires */
+  --border:      #e4dfd5;        /* bordures légères */
+  --border-md:   #ccc8be;        /* bordures moyennes */
+
+  --blue:        #3a6ef0;        /* brand primary */
+  --blue-light:  #ebf0fe;        /* bg badges, zones */
+  --blue-dark:   #2150c0;        /* hover */
+  --green:       #15803d;        /* santé / succès */
+  --green-light: #dcfce7;
+  --amber:       #b45309;        /* avertissement */
+  --amber-light: #fef3c7;
+  --red:         #dc2626;        /* erreur */
+  --red-light:   #fee2e2;
+  --gold:        #d97706;        /* statut gold */
+  --gold-light:  #fef9c3;
+
+  --text:        #111827;        /* principal */
+  --text-2:      #374151;        /* secondaire fort */
+  --text-3:      #6b7280;        /* muted */
+  --text-4:      #9ca3af;        /* placeholder */
+
+  --viande:      #ef4444;        /* composition bar — viande */
+  --poisson:     #3b82f6;        /* composition bar — poisson */
+  --volaille:    #f59e0b;        /* composition bar — volaille */
+
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   18px;
+  --radius-xl:   24px;
+  --shadow-card: 0 2px 12px rgba(0,0,0,.07), 0 0 0 1px rgba(0,0,0,.04);
+  --shadow-hover: 0 8px 28px rgba(0,0,0,.11);
+
+  --font: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { color: var(--blue); text-decoration: none; }
+
+/* ── NAVBAR ─────────────────────────────────── */
+.navbar {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.navbar-logo {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--blue);
+  letter-spacing: -0.02em;
+  margin-right: auto;
+}
+.navbar-logo span { color: var(--text); }
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+}
+.navbar-links a {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: .875rem;
+  font-weight: 500;
+  color: var(--text-2);
+  transition: background .15s, color .15s;
+}
+.navbar-links a:hover { background: var(--surface-alt); color: var(--text); }
+.navbar-links a.active { background: var(--blue-light); color: var(--blue); }
+
+.navbar-wallet {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+  padding: 6px 14px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: .875rem;
+}
+.navbar-wallet .amount {
+  font-weight: 700;
+  color: var(--text);
+}
+.navbar-wallet .label {
+  font-size: .75rem;
+  color: var(--text-3);
+}
+.navbar-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  color: var(--blue);
+  font-weight: 700;
+  font-size: .8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  cursor: pointer;
+}
+.badge-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--gold-light);
+  color: var(--gold);
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  border: 1px solid #fde68a;
+}
+
+/* ── PAGE WRAPPER ───────────────────────────── */
+.page-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+/* ── FLASH MESSAGES ─────────────────────────── */
+.flash {
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: .9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.flash-success { background: var(--green-light); color: var(--green); }
+.flash-error   { background: var(--red-light); color: var(--red); }
+.flash-warning { background: var(--amber-light); color: var(--amber); }
+
+/* ── PAGE HEADER ────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+.page-header-text .kicker {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--blue);
+  margin-bottom: 6px;
+}
+.page-header-text h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+  color: var(--text);
+}
+.page-header-text p {
+  margin-top: 8px;
+  font-size: .95rem;
+  color: var(--text-3);
+}
+
+/* ── IMC WIDGET (Gestalt: Closure — arc fermé) ─ */
+.imc-widget {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  min-width: 220px;
+  text-align: center;
+}
+.imc-widget .title {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+.imc-arc-wrap { position: relative; width: 120px; height: 70px; margin: 0 auto 8px; }
+.imc-arc-wrap svg { overflow: visible; }
+.imc-value {
+  position: absolute;
+  bottom: -4px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.imc-cat {
+  font-size: .8rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+.imc-cat.normal  { background: var(--green-light); color: var(--green); }
+.imc-cat.surpoid { background: var(--amber-light); color: var(--amber); }
+.imc-cat.obese   { background: var(--red-light); color: var(--red); }
+.imc-ideal { font-size: .75rem; color: var(--text-3); }
+
+/* ═══════════════════════════════════════════════
+   PAGE SUGGESTIONS (composant central)
+   Gestalt: Proximity, Similarity, Common Region
+═══════════════════════════════════════════════ */
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Grille régimes — Similarity (tous les cards identiques) */
+.regimes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+/* Carte régime */
+.regime-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow .2s, transform .2s;
+  display: flex;
+  flex-direction: column;
+}
+.regime-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+/* Gestalt Proximity: header = nom + tag groupés */
+.regime-card-head {
+  padding: 20px 20px 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.regime-card-head h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+.regime-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: .7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.regime-tag.reduire  { background: var(--blue-light); color: var(--blue); }
+.regime-tag.augmenter { background: var(--green-light); color: var(--green); }
+.regime-tag.ideal    { background: var(--amber-light); color: var(--amber); }
+
+.regime-card-body {
+  padding: 14px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.regime-desc {
+  font-size: .875rem;
+  color: var(--text-3);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Composition bars — Gestalt Prägnanz: barres visuelles > chiffres */
+.compo-label {
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+.compo-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.compo-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.compo-name {
+  font-size: .75rem;
+  color: var(--text-2);
+  width: 54px;
+  flex-shrink: 0;
+}
+.compo-bar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--surface-alt);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.compo-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width .5s ease;
+}
+.compo-pct {
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--text-2);
+  width: 30px;
+  text-align: right;
+}
+
+/* Variation poids */
+.delta-poids {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--surface-alt);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.delta-poids .icon { font-size: 1.1rem; }
+.delta-poids .label {
+  font-size: .75rem;
+  color: var(--text-3);
+}
+.delta-poids .value {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-left: auto;
+}
+
+/* Sélecteur durée — pills radio (Gestalt: Similarity) */
+.duration-label {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+.duration-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pill-input { display: none; }
+.pill-label {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-md);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  min-width: 64px;
+  text-align: center;
+}
+.pill-label .days {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.pill-label .price {
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--blue);
+  margin-top: 2px;
+}
+.pill-label .price-gold {
+  font-size: .65rem;
+  color: var(--text-4);
+  text-decoration: line-through;
+}
+.pill-input:checked + .pill-label {
+  border-color: var(--blue);
+  background: var(--blue-light);
+}
+.pill-input:checked + .pill-label .days { color: var(--blue); }
+
+/* CTA subscribe */
+.regime-card-foot {
+  padding: 0 20px 20px;
+  margin-top: auto;
+}
+.btn-subscribe {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--blue);
+  color: #fff;
+  font-size: .9rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background .15s, transform .1s;
+  gap: 6px;
+}
+.btn-subscribe:hover { background: var(--blue-dark); }
+.btn-subscribe:active { transform: scale(.98); }
+.btn-subscribe.disabled {
+  background: var(--surface-alt);
+  color: var(--text-4);
+  cursor: not-allowed;
+}
+.solde-warning {
+  font-size: .75rem;
+  color: var(--red);
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* ═══════════════════════════════════════════════
+   PAGE OBJECTIF — 3 cartes visuelles
+   Gestalt: Similarity + Common Region
+═══════════════════════════════════════════════ */
+.objectif-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 32px;
+}
+.objectif-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 32px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .2s, box-shadow .2s, transform .15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+.objectif-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
+}
+.objectif-card.selected {
+  border-color: var(--blue);
+  background: var(--blue-light);
+}
+.objectif-card.selected .check {
+  opacity: 1;
+}
+.objectif-card .check {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .2s;
+}
+.objectif-card .check::after {
+  content: '✓';
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+}
+.objectif-icon {
+  width: 64px; height: 64px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+.objectif-icon.up  { background: var(--green-light); }
+.objectif-icon.down { background: var(--blue-light); }
+.objectif-icon.ideal { background: var(--amber-light); }
+
+.objectif-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.objectif-desc {
+  font-size: .825rem;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+.objectif-tag {
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+/* ═══════════════════════════════════════════════
+   PAGE PROFIL — layout 2 colonnes
+   Gestalt: Proximity (données groupées par section)
+═══════════════════════════════════════════════ */
+.profil-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+.card-head {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.card-body { padding: 20px; }
+
+.profil-avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  color: var(--blue);
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+.profil-name {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.profil-email {
+  text-align: center;
+  font-size: .825rem;
+  color: var(--text-3);
+  margin-bottom: 12px;
+}
+.profil-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.profil-stat {
+  background: var(--surface-alt);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  text-align: center;
+}
+.profil-stat .val {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.profil-stat .lbl {
+  font-size: .7rem;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+/* IMC gauge detail */
+.imc-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.imc-bar-wrap {
+  position: relative;
+  height: 10px;
+  border-radius: 99px;
+  background: linear-gradient(to right, #3b82f6 0%, #22c55e 40%, #f59e0b 70%, #ef4444 100%);
+  margin: 8px 0;
+}
+.imc-marker {
+  position: absolute;
+  top: -4px;
+  width: 18px; height: 18px;
+  background: #fff;
+  border: 2.5px solid var(--text);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+.imc-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: .65rem;
+  color: var(--text-3);
+}
+
+/* Formulaire inside card */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-group label {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border-md);
+  border-radius: var(--radius-md);
+  font-size: .9rem;
+  color: var(--text);
+  background: var(--surface);
+  font-family: var(--font);
+  transition: border-color .15s, box-shadow .15s;
+}
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(58,110,240,.15);
+}
+.form-error { font-size: .75rem; color: var(--red); }
+
+/* ═══════════════════════════════════════════════
+   PAGE PORTEFEUILLE
+═══════════════════════════════════════════════ */
+.wallet-hero {
+  background: var(--blue);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 24px;
+}
+.wallet-balance .lbl {
+  font-size: .8rem;
+  opacity: .75;
+  margin-bottom: 6px;
+}
+.wallet-balance .amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -.04em;
+}
+.wallet-gold {
+  background: rgba(255,255,255,.15);
+  border: 1.5px solid rgba(255,255,255,.3);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  text-align: center;
+  min-width: 160px;
+}
+.wallet-gold .gl {
+  font-size: .75rem;
+  opacity: .75;
+  margin-bottom: 4px;
+}
+.wallet-gold .btn-gold {
+  display: block;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: var(--gold);
+  color: #fff;
+  border-radius: var(--radius-md);
+  font-size: .8rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+
+.code-input-wrap {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.code-input-wrap input {
+  flex: 1;
+  padding: 14px 16px;
+  border: 2px dashed var(--border-md);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-family: monospace;
+  background: var(--surface);
+  transition: border-color .15s;
+  letter-spacing: .1em;
+}
+.code-input-wrap input:focus {
+  outline: none;
+  border-color: var(--blue);
+  border-style: solid;
+}
+.btn-primary {
+  padding: 14px 24px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font);
+  white-space: nowrap;
+}
+.btn-primary:hover { background: var(--blue-dark); }
+
+.code-result {
+  display: none;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  font-size: .9rem;
+  font-weight: 500;
+}
+.code-result.success { display: flex; background: var(--green-light); color: var(--green); gap: 10px; align-items: center; }
+.code-result.error   { display: flex; background: var(--red-light); color: var(--red); gap: 10px; align-items: center; }
+
+/* Historique codes */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .875rem;
+}
+.history-table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-3);
+  border-bottom: 1px solid var(--border);
+}
+.history-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-2);
+}
+.history-table tr:last-child td { border-bottom: none; }
+
+/* ── BOUTONS GLOBAUX ────────────────────────── */
+.btn-outline {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1.5px solid var(--border-md);
+  border-radius: var(--radius-md);
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  font-family: var(--font);
+}
+.btn-outline:hover { background: var(--surface-alt); }
+
+/* ── RESPONSIVE ─────────────────────────────── */
+@media (max-width: 768px) {
+  .objectif-grid { grid-template-columns: 1fr; }
+  .profil-grid { grid-template-columns: 1fr; }
+  .regimes-grid { grid-template-columns: 1fr; }
+  .navbar-links { display: none; }
+  .page-header { flex-direction: column; }
+  .wallet-hero { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ╔════════════════════════════════════════════╗
+     ║  COMPOSANT 1 — NAVBAR FRONT               ║
+     ╚════════════════════════════════════════════╝
+     À inclure dans layouts/front.php             -->
+<nav class="navbar">
+  <div class="navbar-logo">Ré<span>gime</span></div>
+  <ul class="navbar-links">
+    <li><a href="/suggestions" class="active">Suggestions</a></li>
+    <li><a href="/profil">Mon profil</a></li>
+    <li><a href="/portefeuille">Portefeuille</a></li>
+  </ul>
+  <div class="navbar-wallet">
+    <div>
+      <div class="label">Solde</div>
+      <div class="amount">48,00 €</div>
+    </div>
+    <span class="badge-gold">⭐ Gold</span>
+  </div>
+  <div class="navbar-avatar" title="Pierre D.">PD</div>
+</nav>
+
+<!-- ╔════════════════════════════════════════════╗
+     ║  PAGE SUGGESTIONS — template principal    ║
+     ╚════════════════════════════════════════════╝ -->
+<div class="page-content" id="page-suggestions">
+
+  <!-- Flash message (affiché conditionnellement via PHP) -->
+  <div class="flash flash-success" style="display:none">✓ Souscription confirmée ! Votre programme démarre aujourd'hui.</div>
+
+  <!-- Header de page + widget IMC (Gestalt: Figure/Ground) -->
+  <div class="page-header">
+    <div class="page-header-text">
+      <div class="kicker">Bonjour Pierre</div>
+      <h1>Vos suggestions<br>personnalisées</h1>
+      <p>Régimes adaptés à votre objectif de réduction de poids.</p>
+    </div>
+
+    <!-- Gestalt: Closure — arc IMC fermé = signal visuel fort -->
+    <div class="imc-widget">
+      <div class="title">Votre IMC</div>
+      <div class="imc-arc-wrap">
+        <svg width="120" height="70" viewBox="0 0 120 70">
+          <!-- track -->
+          <path d="M 10 65 A 50 50 0 0 1 110 65" fill="none" stroke="#e4dfd5" stroke-width="8" stroke-linecap="round"/>
+          <!-- fill — 24.1 IMC = ~55% arc -->
+          <path d="M 10 65 A 50 50 0 0 1 80 18" fill="none" stroke="#3a6ef0" stroke-width="8" stroke-linecap="round"/>
+        </svg>
+        <div class="imc-value">24.1</div>
+      </div>
+      <span class="imc-cat normal">Normal</span>
+      <div class="imc-ideal">Poids idéal : 68 – 72 kg</div>
+    </div>
+  </div>
+
+  <!-- Grille régimes (Gestalt: Similarity — toutes les cartes identiques) -->
+  <p class="section-title">Régimes recommandés</p>
+  <div class="regimes-grid">
+
+    <!-- ── CARTE RÉGIME 1 ── -->
+    <div class="regime-card">
+      <div class="regime-card-head">
+        <h2>Méditerranéen</h2>
+        <span class="regime-tag reduire">↓ Perte de poids</span>
+      </div>
+      <div class="regime-card-body">
+        <p class="regime-desc">Riche en poissons et volailles, faible en graisses saturées. Idéal pour une perte progressive.</p>
+
+        <!-- Composition bars — Gestalt: Prägnanz -->
+        <div>
+          <div class="compo-label">Composition</div>
+          <div class="compo-bars">
+            <div class="compo-row">
+              <span class="compo-name">Viande</span>
+              <div class="compo-bar-track"><div class="compo-bar-fill" style="width:20%;background:var(--viande)"></div></div>
+              <span class="compo-pct">20%</span>
+            </div>
+            <div class="compo-row">
+              <span class="compo-name">Poisson</span>
+              <div class="compo-bar-track"><div class="compo-bar-fill" style="width:40%;background:var(--poisson)"></div></div>
+              <span class="compo-pct">40%</span>
+            </div>
+            <div class="compo-row">
+              <span class="compo-name">Volaille</span>
+              <div class="compo-bar-track"><div class="compo-bar-fill" style="width:40%;background:var(--volaille)"></div></div>
+              <span class="compo-pct">40%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="delta-poids">
+          <span class="icon">⚖️</span>
+          <span class="label">Variation attendue</span>
+          <span class="value">−0.5 à −0.2 kg/sem.</span>
+        </div>
+
+        <!-- Sélecteur durée — pills radio -->
+        <div>
+          <div class="duration-label">Choisir une durée</div>
+          <div class="duration-pills">
+            <input class="pill-input" type="radio" name="duree-1" id="d1-7">
+            <label class="pill-label" for="d1-7">
+              <span class="days">7 j</span>
+              <span class="price">19,90 €</span>
+              <span class="price-gold">23,90 €</span>
+            </label>
+            <input class="pill-input" type="radio" name="duree-1" id="d1-14" checked>
+            <label class="pill-label" for="d1-14">
+              <span class="days">14 j</span>
+              <span class="price">34,90 €</span>
+              <span class="price-gold">40,90 €</span>
+            </label>
+            <input class="pill-input" type="radio" name="duree-1" id="d1-30">
+            <label class="pill-label" for="d1-30">
+              <span class="days">30 j</span>
+              <span class="price">59,90 €</span>
+              <span class="price-gold">69,90 €</span>
+            </label>
+            <input class="pill-input" type="radio" name="duree-1" id="d1-60">
+            <label class="pill-label" for="d1-60">
+              <span class="days">60 j</span>
+              <span class="price">99,90 €</span>
+              <span class="price-gold">119,90 €</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="regime-card-foot">
+        <button class="btn-subscribe">Souscrire pour 34,90 €</button>
+      </div>
+    </div>
+
+    <!-- ── CARTE RÉGIME 2 ── -->
+    <div class="regime-card">
+      <div class="regime-card-head">
+        <h2>Hypocalorique</h2>
+        <span class="regime-tag reduire">↓ Perte de poids</span>
+      </div>
+      <div class="regime-card-body">
+        <p class="regime-desc">Déficit calorique contrôlé avec équilibre nutritionnel préservé. Résultats rapides et durables.</p>
+        <div>
+          <div class="compo-label">Composition</div>
+          <div class="compo-bars">
+            <div class="compo-row">
+              <span class="compo-name">Viande</span>
+              <div class="compo-bar-track"><div class="compo-bar-fill" style="width:15%;background:var(--viande)"></div></div>
+              <span class="compo-pct">15%</span>
+            </div>
+            <div class="compo-row">
+              <span class="compo-name">Poisson</span>
+              <div class="compo-bar-track"><div class="compo-bar-fill" style="width:35%;background:var(--poisson)"></div></div>
+              <span class="compo-pct">35%</span>
+            </div>
+            <div class="compo-row">
+              <span class="compo-name">Volaille</span>
+              <div class="compo-bar-track"><div class="compo-bar-fill" style="width:50%;background:var(--volaille)"></div></div>
+              <span class="compo-pct">50%</span>
+            </div>
+          </div>
+        </div>
+        <div class="delta-poids">
+          <span class="icon">⚖️</span>
+          <span class="label">Variation attendue</span>
+          <span class="value">−1.5 à −0.3 kg/sem.</span>
+        </div>
+        <div>
+          <div class="duration-label">Choisir une durée</div>
+          <div class="duration-pills">
+            <input class="pill-input" type="radio" name="duree-2" id="d2-7">
+            <label class="pill-label" for="d2-7"><span class="days">7 j</span><span class="price">17,90 €</span></label>
+            <input class="pill-input" type="radio" name="duree-2" id="d2-14" checked>
+            <label class="pill-label" for="d2-14"><span class="days">14 j</span><span class="price">29,90 €</span></label>
+            <input class="pill-input" type="radio" name="duree-2" id="d2-30">
+            <label class="pill-label" for="d2-30"><span class="days">30 j</span><span class="price">49,90 €</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="regime-card-foot">
+        <button class="btn-subscribe">Souscrire pour 29,90 €</button>
+      </div>
+    </div>
+
+    <!-- ── CARTE RÉGIME 3 — solde insuffisant ── -->
+    <div class="regime-card">
+      <div class="regime-card-head">
+        <h2>Cétogène</h2>
+        <span class="regime-tag reduire">↓ Perte de poids</span>
+      </div>
+      <div class="regime-card-body">
+        <p class="regime-desc">Très faible en glucides, riche en graisses et protéines. Perte de poids rapide en cétose.</p>
+        <div>
+          <div class="compo-label">Composition</div>
+          <div class="compo-bars">
+            <div class="compo-row">
+              <span class="compo-name">Viande</span>
+              <div class="compo-bar-track"><div class="compo-bar-fill" style="width:60%;background:var(--viande)"></div></div>
+              <span class="compo-pct">60%</span>
+            </div>
+            <div class="compo-row">
+              <span class="compo-name">Poisson</span>
+              <div class="compo-bar-track"><div class="compo-bar-fill" style="width:10%;background:var(--poisson)"></div></div>
+              <span class="compo-pct">10%</span>
+            </div>
+            <div class="compo-row">
+              <span class="compo-name">Volaille</span>
+              <div class="compo-bar-track"><div class="compo-bar-fill" style="width:30%;background:var(--volaille)"></div></div>
+              <span class="compo-pct">30%</span>
+            </div>
+          </div>
+        </div>
+        <div class="delta-poids">
+          <span class="icon">⚖️</span>
+          <span class="label">Variation attendue</span>
+          <span class="value">−2.0 à −0.5 kg/sem.</span>
+        </div>
+        <div>
+          <div class="duration-label">Choisir une durée</div>
+          <div class="duration-pills">
+            <input class="pill-input" type="radio" name="duree-3" id="d3-14" checked>
+            <label class="pill-label" for="d3-14"><span class="days">14 j</span><span class="price">52,90 €</span></label>
+            <input class="pill-input" type="radio" name="duree-3" id="d3-30">
+            <label class="pill-label" for="d3-30"><span class="days">30 j</span><span class="price">89,90 €</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="regime-card-foot">
+        <button class="btn-subscribe disabled" disabled>Souscrire pour 52,90 €</button>
+        <div class="solde-warning">⚠ Solde insuffisant — <a href="/portefeuille">Recharger</a></div>
+      </div>
+    </div>
+
+  </div><!-- /regimes-grid -->
+
+</div><!-- /page-suggestions -->
+
+
+<!-- ╔════════════════════════════════════════════╗
+     ║  PAGE OBJECTIF — 3 cartes visuelles       ║
+     ╚════════════════════════════════════════════╝ -->
+<div class="page-content" id="page-objectif" style="display:none">
+  <div class="page-header">
+    <div class="page-header-text">
+      <div class="kicker">Votre programme</div>
+      <h1>Quel est votre objectif ?</h1>
+      <p>Ce choix détermine les régimes et activités qui vous seront suggérés.</p>
+    </div>
+  </div>
+  <div class="objectif-grid">
+    <div class="objectif-card" onclick="selectObjectif(this,'augmenter')">
+      <div class="check"></div>
+      <div class="objectif-icon up">💪</div>
+      <div class="objectif-title">Augmenter ma masse</div>
+      <p class="objectif-desc">Régimes riches en protéines pour développer la masse musculaire.</p>
+      <span class="objectif-tag" style="background:var(--green-light);color:var(--green)">+0.3 à +1.0 kg/sem.</span>
+    </div>
+    <div class="objectif-card selected" onclick="selectObjectif(this,'reduire')">
+      <div class="check"></div>
+      <div class="objectif-icon down">🔥</div>
+      <div class="objectif-title">Réduire mon poids</div>
+      <p class="objectif-desc">Plans hypocaloriques ou faibles en glucides pour perdre progressivement.</p>
+      <span class="objectif-tag" style="background:var(--blue-light);color:var(--blue)">−0.5 à −2.0 kg/sem.</span>
+    </div>
+    <div class="objectif-card" onclick="selectObjectif(this,'ideal')">
+      <div class="check"></div>
+      <div class="objectif-icon ideal">⚖️</div>
+      <div class="objectif-title">Atteindre un IMC idéal</div>
+      <p class="objectif-desc">Équilibre alimentaire pour maintenir un poids de forme stable.</p>
+      <span class="objectif-tag" style="background:var(--amber-light);color:var(--amber)">IMC 18.5 – 24.9</span>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:flex-end;gap:12px">
+    <button class="btn-outline">Retour</button>
+    <button class="btn-primary">Enregistrer l'objectif →</button>
+  </div>
+</div>
+
+
+<!-- ╔════════════════════════════════════════════╗
+     ║  PAGE PROFIL — layout 2 colonnes          ║
+     ╚════════════════════════════════════════════╝ -->
+<div class="page-content" id="page-profil" style="display:none">
+  <div class="page-header">
+    <div class="page-header-text">
+      <div class="kicker">Mon espace</div>
+      <h1>Mon profil</h1>
+      <p>Consultez et modifiez vos données de santé.</p>
+    </div>
+  </div>
+  <div class="profil-grid">
+    <!-- Colonne gauche — identité -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card">
+        <div class="card-body" style="text-align:center">
+          <div class="profil-avatar">PD</div>
+          <div class="profil-name">Pierre Dupont</div>
+          <div class="profil-email">pierre.d@email.com</div>
+          <span class="badge-gold" style="justify-content:center">⭐ Membre Gold</span>
+          <div class="profil-stats" style="margin-top:16px">
+            <div class="profil-stat"><div class="val">48,00 €</div><div class="lbl">Solde</div></div>
+            <div class="profil-stat"><div class="val">3</div><div class="lbl">Régimes</div></div>
+            <div class="profil-stat"><div class="val">Homme</div><div class="lbl">Genre</div></div>
+            <div class="profil-stat"><div class="val">↓ Poids</div><div class="lbl">Objectif</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- IMC card -->
+      <div class="card">
+        <div class="card-head">Analyse IMC</div>
+        <div class="card-body">
+          <div class="imc-detail">
+            <div style="display:flex;justify-content:space-between;align-items:baseline">
+              <span style="font-size:2rem;font-weight:700;color:var(--text)">24.1</span>
+              <span class="imc-cat normal">Normal</span>
+            </div>
+            <div class="imc-bar-wrap">
+              <div class="imc-marker" style="left:55%"></div>
+            </div>
+            <div class="imc-scale"><span>Maigreur</span><span>Normal</span><span>Surpoids</span><span>Obésité</span></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+              <div class="profil-stat"><div class="val">175 cm</div><div class="lbl">Taille</div></div>
+              <div class="profil-stat"><div class="val">73,5 kg</div><div class="lbl">Poids</div></div>
+              <div class="profil-stat" style="grid-column:1/-1"><div class="val">68 – 72 kg</div><div class="lbl">Poids idéal estimé</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonne droite — formulaire -->
+    <div class="card">
+      <div class="card-head">Modifier mes données de santé</div>
+      <div class="card-body">
+        <div class="flash flash-success" style="margin-bottom:16px;display:none">✓ Profil mis à jour.</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="taille">Taille (cm)</label>
+            <input type="number" id="taille" value="175" min="100" max="250" step="0.1">
+          </div>
+          <div class="form-group">
+            <label for="poids">Poids (kg)</label>
+            <input type="number" id="poids" value="73.5" min="30" max="300" step="0.1">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:16px">
+          <label for="objectif-select">Objectif</label>
+          <select id="objectif-select">
+            <option value="augmenter">Augmenter ma masse</option>
+            <option value="reduire" selected>Réduire mon poids</option>
+            <option value="ideal">Atteindre un IMC idéal</option>
+          </select>
+        </div>
+        <!-- Preview IMC live -->
+        <div style="background:var(--blue-light);border-radius:var(--radius-md);padding:14px;margin-bottom:20px">
+          <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin-bottom:6px">Aperçu IMC en direct</div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span id="imc-live" style="font-size:1.6rem;font-weight:700;color:var(--blue)">24.1</span>
+            <span id="imc-cat-live" class="imc-cat normal">Normal</span>
+            <span style="font-size:.8rem;color:var(--text-3);margin-left:auto">Idéal 68–72 kg</span>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:12px">
+          <button class="btn-outline">Annuler</button>
+          <button class="btn-primary">Enregistrer →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ╔════════════════════════════════════════════╗
+     ║  PAGE PORTEFEUILLE                        ║
+     ╚════════════════════════════════════════════╝ -->
+<div class="page-content" id="page-wallet" style="display:none">
+  <div class="page-header">
+    <div class="page-header-text">
+      <div class="kicker">Mon compte</div>
+      <h1>Mon portefeuille</h1>
+      <p>Rechargez votre solde avec un code et accédez au statut Gold.</p>
+    </div>
+  </div>
+
+  <!-- Hero solde -->
+  <div class="wallet-hero">
+    <div class="wallet-balance">
+      <div class="lbl">Solde disponible</div>
+      <div class="amount">48,00 €</div>
+    </div>
+    <div class="wallet-gold">
+      <div class="gl">⭐ Statut Gold actif</div>
+      <div style="font-size:.85rem;opacity:.85">−15% sur tous les régimes</div>
+      <div style="font-size:.7rem;opacity:.65;margin-top:4px">Valable tant que le compte est actif</div>
+    </div>
+  </div>
+
+  <!-- Saisie code -->
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-head">Utiliser un code portefeuille</div>
+    <div class="card-body">
+      <div class="code-input-wrap">
+        <input type="text" id="code-input" placeholder="EX : PROMO-2024-ABCD" maxlength="20">
+        <button class="btn-primary" id="btn-valider" onclick="validerCode()">Valider le code</button>
+      </div>
+      <div class="code-result success" id="code-result-ok">
+        <span>✓</span>
+        <span>+25,00 € ajoutés. Nouveau solde : <strong>73,00 €</strong></span>
+      </div>
+      <div class="code-result error" id="code-result-err">
+        <span>✕</span>
+        <span>Code invalide ou déjà utilisé.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historique -->
+  <div class="card">
+    <div class="card-head">Historique des codes</div>
+    <div class="card-body" style="padding:0">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Montant</th>
+            <th>Date</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-family:monospace;font-size:.85rem">PROMO-2024-ABCD</td>
+            <td style="color:var(--green);font-weight:600">+25,00 €</td>
+            <td style="color:var(--text-3)">07/05/2026</td>
+            <td><span style="background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:99px;font-size:.72rem;font-weight:700">Utilisé</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:monospace;font-size:.85rem">BIENV-ENUE-0001</td>
+            <td style="color:var(--green);font-weight:600">+10,00 €</td>
+            <td style="color:var(--text-3)">02/04/2026</td>
+            <td><span style="background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:99px;font-size:.72rem;font-weight:700">Utilisé</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:monospace;font-size:.85rem">GOLD-ACCESS-9XK7</td>
+            <td style="color:var(--gold);font-weight:600">+29,99 € (Gold)</td>
+            <td style="color:var(--text-3)">01/03/2026</td>
+            <td><span style="background:var(--gold-light);color:var(--gold);padding:2px 8px;border-radius:99px;font-size:.72rem;font-weight:700">Gold activé</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- /page-wallet -->
+
+
+<!-- ── Navigation demo (pour tests locaux) ──── -->
+<div style="position:fixed;bottom:20px;right:20px;display:flex;gap:8px;z-index:999">
+  <button onclick="showPage('suggestions')" style="padding:6px 12px;background:#3a6ef0;color:#fff;border:none;border-radius:8px;font-size:.75rem;cursor:pointer">Suggestions</button>
+  <button onclick="showPage('objectif')" style="padding:6px 12px;background:#374151;color:#fff;border:none;border-radius:8px;font-size:.75rem;cursor:pointer">Objectif</button>
+  <button onclick="showPage('profil')" style="padding:6px 12px;background:#374151;color:#fff;border:none;border-radius:8px;font-size:.75rem;cursor:pointer">Profil</button>
+  <button onclick="showPage('wallet')" style="padding:6px 12px;background:#374151;color:#fff;border:none;border-radius:8px;font-size:.75rem;cursor:pointer">Wallet</button>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page-content').forEach(el => el.style.display = 'none');
+  document.getElementById('page-' + id).style.display = 'block';
+}
+
+function selectObjectif(el, val) {
+  document.querySelectorAll('.objectif-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* IMC live */
+function calcImc() {
+  const t = parseFloat(document.getElementById('taille')?.value) / 100;
+  const p = parseFloat(document.getElementById('poids')?.value);
+  if (!t || !p) return;
+  const imc = (p / (t * t)).toFixed(1);
+  const el = document.getElementById('imc-live');
+  const cat = document.getElementById('imc-cat-live');
+  if (el) el.textContent = imc;
+  if (cat) {
+    if (imc < 18.5) { cat.textContent = 'Maigreur'; cat.className = 'imc-cat obese'; }
+    else if (imc < 25) { cat.textContent = 'Normal'; cat.className = 'imc-cat normal'; }
+    else if (imc < 30) { cat.textContent = 'Surpoids'; cat.className = 'imc-cat surpoid'; }
+    else { cat.textContent = 'Obésité'; cat.className = 'imc-cat obese'; }
+  }
+}
+document.getElementById('taille')?.addEventListener('input', calcImc);
+document.getElementById('poids')?.addEventListener('input', calcImc);
+
+/* Prix dynamique sur sélection durée */
+document.querySelectorAll('.pill-input').forEach(radio => {
+  radio.addEventListener('change', function() {
+    const card = this.closest('.regime-card');
+    const btn = card?.querySelector('.btn-subscribe');
+    const priceEl = this.nextElementSibling?.querySelector('.price');
+    if (btn && priceEl && !btn.classList.contains('disabled')) {
+      btn.textContent = 'Souscrire pour ' + priceEl.textContent;
+    }
+  });
+});
+
+/* Code portefeuille — démo */
+function validerCode() {
+  const code = document.getElementById('code-input')?.value.trim().toUpperCase();
+  document.getElementById('code-result-ok').style.display = 'none';
+  document.getElementById('code-result-err').style.display = 'none';
+  if (code === 'PROMO-2024-ABCD') {
+    document.getElementById('code-result-ok').style.display = 'flex';
+  } else if (code) {
+    document.getElementById('code-result-err').style.display = 'flex';
+  }
+}
+</script>
+</body>
+</html>

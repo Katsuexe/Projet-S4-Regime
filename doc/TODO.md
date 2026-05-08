@@ -154,6 +154,13 @@
 * [ ] 🟠 Tableau croisé : objectif × régime choisi
 * [ ] 🟠 Indicateurs Gold : nb utilisateurs Gold, revenus Gold
 
+### K bis. Back Office — Coach
+
+* [ ] 🟠 Définir clairement le périmètre fonctionnel du rôle coach dans les specs
+* [ ] 🟠 Ajouter les routes coach dans `app/Config/Routes.php`
+* [ ] 🟠 Finaliser le dashboard coach et ses accès
+* [ ] 🟠 Vérifier la cohérence entre `users.role`, `CoachFilter` et `Config/AuthGroups`
+
 ---
 
 ### L. Back Office — CRUD Régimes

@@ -13,7 +13,7 @@ Une application web de gestion de regimes alimentaires developpee avec CodeIgnit
 - Base de donnees : MySQL 8.0+
 - Frontend : Bootstrap 5, JavaScript ES6+
 - Graphiques : Chart.js
-- PDF : jsPDF / DomPDF
+- PDF : DomPDF
 
 ## Prerequis
 
@@ -30,10 +30,14 @@ composer install
 cp env .env
 # Editer .env avec vos parametres de base de donnees
 php spark migrate
+php spark db:seed UserSeeder
+php spark db:seed RegimeSeeder
+php spark db:seed ActiviteSeeder
+php spark db:seed CodeSeeder
 php spark serve
 ```
 
-Voir [doc/installation.md](doc/installation.md) pour les details complets.
+Les instructions detaillees sont disponibles dans [doc/installation.md](doc/installation.md).
 
 ## Documentation
 

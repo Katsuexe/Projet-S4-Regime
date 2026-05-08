@@ -1,3 +1,4 @@
+-- Active: 1776233997297@@127.0.0.1@3306@regime_s4
 -- =============================================================================
 --  PROJET S4 — Application Régime Alimentaire
 --  SCRIPT UNIQUE COMPLET : STRUCTURE + DONNÉES (essentielles + démo)

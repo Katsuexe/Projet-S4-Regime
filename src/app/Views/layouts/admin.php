@@ -16,6 +16,7 @@
     <link href="<?= base_url('niceadmin/assets/vendor/remixicon/remixicon.css') ?>" rel="stylesheet">
     <link href="<?= base_url('niceadmin/assets/vendor/simple-datatables/style.css') ?>" rel="stylesheet">
     <link href="<?= base_url('niceadmin/assets/css/style.css') ?>" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <?= view('partials/navbar_admin', ['pageTitle' => $title ?? 'Espace interne']) ?>
@@ -40,5 +41,7 @@
     <script src="<?= base_url('niceadmin/assets/vendor/tinymce/tinymce.min.js') ?>"></script>
     <script src="<?= base_url('niceadmin/assets/vendor/php-email-form/validate.js') ?>"></script>
     <script src="<?= base_url('niceadmin/assets/js/main.js') ?>"></script>
+    <?= $this->renderSection('scripts') ?>
+    <?= view('partials/modal_confirm_delete') ?>
 </body>
 </html>

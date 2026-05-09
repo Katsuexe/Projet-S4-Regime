@@ -15,24 +15,23 @@
     <?php if (session()->getFlashdata('success')): ?>
         <div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div>
     <?php endif; ?>
-    <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
-    <?php endif; ?>
 
     <div class="row">
+        <!-- Left side columns -->
         <div class="col-lg-8">
             <div class="row">
+
+                <!-- Stat Cards -->
                 <div class="col-xxl-4 col-md-6">
                     <div class="card info-card sales-card">
                         <div class="card-body">
-                            <h5 class="card-title">Utilisateurs <span>| Vue rapide</span></h5>
+                            <h5 class="card-title">Utilisateurs <span>| Sportifs actifs</span></h5>
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                     <i class="bi bi-people"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h6>Comptes actifs</h6>
-                                    <span class="text-muted small pt-2 ps-1">Utilisateurs, admins et coach</span>
+                                    <h6><?= $stats['nb_sportifs'] ?></h6>
                                 </div>
                             </div>
                         </div>
@@ -42,130 +41,224 @@
                 <div class="col-xxl-4 col-md-6">
                     <div class="card info-card revenue-card">
                         <div class="card-body">
-                            <h5 class="card-title">Catalogue <span>| Contenu</span></h5>
+                            <h5 class="card-title">Comptes Gold <span>| Total</span></h5>
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-heart-pulse"></i>
+                                    <i class="bi bi-star"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h6>Regimes et activites</h6>
-                                    <span class="text-muted small pt-2 ps-1">Structure prete pour la gestion</span>
+                                    <h6><?= $stats['nb_gold'] ?></h6>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-xxl-4 col-xl-12">
+                <div class="col-xxl-4 col-md-6">
                     <div class="card info-card customers-card">
                         <div class="card-body">
-                            <h5 class="card-title">Portefeuille <span>| Monnaie virtuelle</span></h5>
+                            <h5 class="card-title">Solde Moyen <span>| Sportifs</span></h5>
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                     <i class="bi bi-wallet2"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h6>Codes et recharges</h6>
-                                    <span class="text-muted small pt-2 ps-1">Suivi des flux utilisateur</span>
+                                    <h6><?= number_format($stats['solde_moyen'], 2) ?> €</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card sales-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Revenus <span>| Souscriptions</span></h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-cash-coin"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6><?= number_format($stats['revenus_total'], 2) ?> €</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Codes Libres <span>| Dispos</span></h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-ticket-perforated"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6><?= $stats['codes_libres'] ?></h6>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-12">
-                    <div class="card recent-sales overflow-auto">
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card">
                         <div class="card-body">
-                            <h5 class="card-title">Priorites du back-office <span>| Quoi mettre</span></h5>
-                            <table class="table table-borderless datatable">
+                            <h5 class="card-title">Codes Utilisés <span>| Historique</span></h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-check2-circle"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6><?= $stats['codes_utilises'] ?></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bar Chart -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Souscriptions <span>/ 7 derniers jours</span></h5>
+                            <div id="barChart"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tableaux croisés -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Croisement : Régimes & Objectifs</h5>
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Module</th>
-                                        <th>Role de l'ecran</th>
-                                        <th>Contenu attendu</th>
-                                        <th>Statut UX</th>
+                                        <th>Régime</th>
+                                        <th>Augmenter</th>
+                                        <th>Réduire</th>
+                                        <th>Idéal</th>
+                                        <th>Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php foreach($tableau_croise_1 as $row): ?>
                                     <tr>
-                                        <td>Regimes</td>
-                                        <td>Gerer le catalogue</td>
-                                        <td>Nom, composition, variation de poids, durees et prix</td>
-                                        <td><span class="badge bg-warning">A finaliser</span></td>
+                                        <td><?= esc($row['nom']) ?></td>
+                                        <td><?= $row['augmenter'] ?></td>
+                                        <td><?= $row['reduire'] ?></td>
+                                        <td><?= $row['ideal'] ?></td>
+                                        <td><strong><?= $row['total'] ?></strong></td>
                                     </tr>
-                                    <tr>
-                                        <td>Activites</td>
-                                        <td>Completer les suggestions</td>
-                                        <td>Nom, description, calories/heure, duree conseillee</td>
-                                        <td><span class="badge bg-warning">A finaliser</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Codes</td>
-                                        <td>Alimenter les portefeuilles</td>
-                                        <td>Code, montant, statut, utilisateur</td>
-                                        <td><span class="badge bg-primary">Pret pour integration</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Parametres</td>
-                                        <td>Eviter le hardcode</td>
-                                        <td>Prix Gold, seuils IMC, remise Gold</td>
-                                        <td><span class="badge bg-secondary">Structurer</span></td>
-                                    </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
+                <!-- Dernières souscriptions -->
+                <div class="col-12">
+                    <div class="card recent-sales overflow-auto">
+                        <div class="card-body">
+                            <h5 class="card-title">Dernières souscriptions</h5>
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th>Utilisateur</th>
+                                        <th>Régime</th>
+                                        <th>Durée</th>
+                                        <th>Prix payé</th>
+                                        <th>Gold</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($derniers_achats as $achat): ?>
+                                    <tr>
+                                        <td><?= esc($achat['prenom'] . ' ' . $achat['nom']) ?></td>
+                                        <td><?= esc($achat['regime']) ?></td>
+                                        <td><?= $achat['duree_jours'] ?> j</td>
+                                        <td><?= number_format($achat['prix_paye'], 2) ?> €</td>
+                                        <td>
+                                            <?php if($achat['is_gold']): ?>
+                                                <span class="badge bg-warning text-dark"><i class="bi bi-star-fill"></i></span>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
         <div class="col-lg-4">
+
+            <!-- Donut Chart -->
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Session en cours</h5>
+                    <h5 class="card-title">Répartition des Objectifs</h5>
+                    <div id="donutChart"></div>
+                </div>
+            </div>
+
+            <!-- Utilisateurs Gold récents -->
+            <div class="card">
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Utilisateurs Gold récents</h5>
                     <div class="activity">
+                        <?php foreach($users_gold_recents as $u): ?>
                         <div class="activity-item d-flex">
-                            <div class="activite-label">Nom</div>
-                            <i class="bi bi-circle-fill activity-badge text-primary align-self-start"></i>
-                            <div class="activity-content"><?= esc((session('user_prenom') ?? '') . ' ' . (session('user_nom') ?? '')) ?></div>
-                        </div>
-                        <div class="activity-item d-flex">
-                            <div class="activite-label">Email</div>
-                            <i class="bi bi-circle-fill activity-badge text-success align-self-start"></i>
-                            <div class="activity-content"><?= esc(session('user_email') ?? '') ?></div>
-                        </div>
-                        <div class="activity-item d-flex">
-                            <div class="activite-label">Role</div>
+                            <div class="activite-label"><?= date('d/m', strtotime($u['created_at'] ?? 'now')) ?></div>
                             <i class="bi bi-circle-fill activity-badge text-warning align-self-start"></i>
-                            <div class="activity-content"><?= esc(strtoupper(session('auth_role') ?? 'admin')) ?></div>
+                            <div class="activity-content"><?= esc($u['prenom'] . ' ' . $u['nom']) ?></div>
                         </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-body pb-0">
-                    <h5 class="card-title">Raccourcis utiles</h5>
-                    <div class="news">
-                        <div class="post-item clearfix">
-                            <img src="<?= base_url('niceadmin/assets/img/news-1.jpg') ?>" alt="">
-                            <h4><a href="<?= site_url('admin/regimes') ?>">Gerer les regimes</a></h4>
-                            <p>Verifier que chaque regime a une composition claire et des prix par duree.</p>
-                        </div>
-                        <div class="post-item clearfix">
-                            <img src="<?= base_url('niceadmin/assets/img/news-2.jpg') ?>" alt="">
-                            <h4><a href="<?= site_url('admin/codes') ?>">Consulter les codes</a></h4>
-                            <p>Suivre les recharges et l'etat des codes utilises ou disponibles.</p>
-                        </div>
-                        <div class="post-item clearfix">
-                            <img src="<?= base_url('niceadmin/assets/img/news-3.jpg') ?>" alt="">
-                            <h4><a href="<?= site_url('admin/parametres') ?>">Ajuster les parametres</a></h4>
-                            <p>Centraliser les valeurs metier pour eviter les incoherences dans l'application.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </div><!-- End Right side columns -->
+
     </div>
 </section>
+
+<?= $this->endSection() ?>
+
+<?= $this->section('scripts') ?>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // Bar Chart
+    const barData = <?= $chart_souscriptions ?>;
+    const dates = barData.map(item => item.date);
+    const counts = barData.map(item => item.nb);
+
+    new ApexCharts(document.querySelector("#barChart"), {
+        series: [{ name: 'Souscriptions', data: counts }],
+        chart: { type: 'bar', height: 350 },
+        plotOptions: { bar: { borderRadius: 4, horizontal: false, } },
+        dataLabels: { enabled: false },
+        xaxis: { categories: dates },
+        colors: ['#8B4513']
+    }).render();
+
+    // Donut Chart
+    const donutData = <?= $chart_objectifs ?>;
+    const labels = donutData.map(item => item.objectif);
+    const series = donutData.map(item => parseInt(item.nb));
+
+    new ApexCharts(document.querySelector("#donutChart"), {
+        series: series,
+        chart: { height: 350, type: 'donut', toolbar: { show: true } },
+        labels: labels,
+        colors: ['#15803d', '#dc2626', '#d97706'],
+    }).render();
+});
+</script>
 <?= $this->endSection() ?>

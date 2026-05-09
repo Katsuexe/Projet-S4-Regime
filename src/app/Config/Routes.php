@@ -35,6 +35,31 @@ $routes->group('', ['filter' => 'auth'], static function (RouteCollection $route
 
 $routes->group('admin', ['filter' => 'admin'], static function (RouteCollection $routes): void {
     $routes->get('/', 'Admin\DashboardController::index');
+    
+    // Regimes
+    $routes->get('regimes', 'Admin\RegimeAdminController::index');
+    $routes->get('regimes/creer', 'Admin\RegimeAdminController::creer');
+    $routes->post('regimes/store', 'Admin\RegimeAdminController::store');
+    $routes->get('regimes/modifier/(:num)', 'Admin\RegimeAdminController::modifier/$1');
+    $routes->post('regimes/update/(:num)', 'Admin\RegimeAdminController::update/$1');
+    $routes->get('regimes/supprimer/(:num)', 'Admin\RegimeAdminController::supprimer/$1');
+    
+    // Activites
+    $routes->get('activites', 'Admin\ActiviteAdminController::index');
+    $routes->get('activites/creer', 'Admin\ActiviteAdminController::creer');
+    $routes->post('activites/store', 'Admin\ActiviteAdminController::store');
+    $routes->get('activites/modifier/(:num)', 'Admin\ActiviteAdminController::modifier/$1');
+    $routes->post('activites/update/(:num)', 'Admin\ActiviteAdminController::update/$1');
+    $routes->get('activites/supprimer/(:num)', 'Admin\ActiviteAdminController::supprimer/$1');
+    
+    // Codes
+    $routes->get('codes', 'Admin\CodeAdminController::index');
+    $routes->get('codes/creer', 'Admin\CodeAdminController::creer');
+    $routes->post('codes/store', 'Admin\CodeAdminController::store');
+    
+    // Parametres
+    $routes->get('parametres', 'Admin\ParametreController::index');
+    $routes->post('parametres/update', 'Admin\ParametreController::update');
 });
 
 $routes->group('coach', ['filter' => 'coach'], static function (RouteCollection $routes): void {

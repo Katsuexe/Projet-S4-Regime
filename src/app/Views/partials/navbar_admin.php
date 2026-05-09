@@ -18,7 +18,7 @@ $currentUri = service('uri')->getPath();
         <ul class="d-flex align-items-center">
             <li class="nav-item dropdown pe-3">
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="<?= base_url('niceadmin/assets/img/profile-img.jpg') ?>" alt="Profile" class="rounded-circle">
+                    <!-- <img src="<?php // echo base_url('niceadmin/assets/img/profile-img.jpg') ?>" alt="Profile" class="rounded-circle"> -->
                     <span class="d-none d-md-block dropdown-toggle ps-2"><?= esc((session('user_prenom') ?? '') . ' ' . (session('user_nom') ?? '')) ?></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -57,25 +57,25 @@ $currentUri = service('uri')->getPath();
 
         <?php if (! $isCoach): ?>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="<?= site_url('admin/regimes') ?>">
+                <a class="nav-link <?= (strpos($currentUri, 'admin/regimes') === 0) ? '' : 'collapsed' ?>" href="<?= site_url('admin/regimes') ?>">
                     <i class="bi bi-heart-pulse"></i>
                     <span>Regimes</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="<?= site_url('admin/activites') ?>">
+                <a class="nav-link <?= (strpos($currentUri, 'admin/activites') === 0) ? '' : 'collapsed' ?>" href="<?= site_url('admin/activites') ?>">
                     <i class="bi bi-bicycle"></i>
                     <span>Activites</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="<?= site_url('admin/codes') ?>">
+                <a class="nav-link <?= (strpos($currentUri, 'admin/codes') === 0) ? '' : 'collapsed' ?>" href="<?= site_url('admin/codes') ?>">
                     <i class="bi bi-ticket-perforated"></i>
                     <span>Codes</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="<?= site_url('admin/parametres') ?>">
+                <a class="nav-link <?= (strpos($currentUri, 'admin/parametres') === 0) ? '' : 'collapsed' ?>" href="<?= site_url('admin/parametres') ?>">
                     <i class="bi bi-gear"></i>
                     <span>Parametres</span>
                 </a>

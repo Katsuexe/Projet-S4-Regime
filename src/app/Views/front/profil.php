@@ -95,7 +95,6 @@ $imcPosition = max(0, min(100, ((float) ($imc ?? 0) / 40) * 100));
                         <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin-bottom:6px">Apercu IMC en direct</div>
                         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
                             <span id="imc-live" style="font-size:1.6rem;font-weight:700;color:var(--blue)"><?= esc(number_format((float) ($imc ?? 0), 1, '.', '')) ?></span>
-                            <span class="imc-cat <?= esc($catClass) ?>" id="imc-preview-value"><?= esc($categorie ?? '-') ?></span>
                             <span style="font-size:.8rem;color:var(--text-3);margin-left:auto">Poids ideal : <?= esc(isset($ideal['poids_ideal']) ? (string) $ideal['poids_ideal'] : '-') ?> kg</span>
                         </div>
                     </div>

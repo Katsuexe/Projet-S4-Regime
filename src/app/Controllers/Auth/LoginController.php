@@ -125,6 +125,7 @@ class LoginController extends BaseController
             'user_email'  => $user['email'],
             'genre'       => $user['genre'],
             'is_gold'     => (bool) ($user['is_gold'] ?? false),
+            'solde'       => (float) ($user['solde'] ?? 0),
             'auth_role'   => $role,
         ]);
 

@@ -1,0 +1,43 @@
+COmprendre le projet a rendre :
+    -Projet de changement de poids avec:
+        -Inscription (séparer en 2 , infos utilisateurs et santé)
+            choisir les objectifs 
+            compléter le profil
+
+        -Login 
+
+
+        -Régime :
+            -Proposer un régime et une durée en fonction des infos sur l utilisateur
+                -CRUD des régimes pour les utilisateurs
+                -%de viande , % de poisson , %volaille
+                -prix des régimes en fonction de la durée
+            
+        -Porte monnaie :
+            -On peut rajouter de l argent dans son porte monnaie en entrant un code
+            -validation des codes ??? 
+
+        -Abonnement GOld :
+            -L utilisateur a -15% sur tout le régimes en s abonnant et payant avec l argent de son porte monnaie
+
+        -Activité sportive :
+            - CRUD des activités sportives
+
+        -Pouvoir exporter en pdf les Activité sportives et les régimes 
+
+        -Tableau de bord et statistique
+        
+
+Faire la base de données :
+
+
+
+Départager en partie indépendantes si possible :
+
+
+
+Créer repository GIthub :
+Main --> develop --> FOnctionnalité 1 
+            |------>FOnc 2 
+            |------>Fonc 3
+

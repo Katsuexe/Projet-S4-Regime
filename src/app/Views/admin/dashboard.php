@@ -180,7 +180,7 @@
                                         <td><?= esc($achat['prenom'] . ' ' . $achat['nom']) ?></td>
                                         <td><?= esc($achat['regime']) ?></td>
                                         <td><?= $achat['duree_jours'] ?> j</td>
-                                        <td><?= number_format($achat['prix_paye'], 2) ?> €</td>
+                                        <td><?= number_format($achat['prix_paye'], 2) ?> Ar</td>
                                         <td>
                                             <?php if($achat['is_gold']): ?>
                                                 <span class="badge bg-warning text-dark"><i class="bi bi-star-fill"></i></span>

@@ -15,11 +15,15 @@
     <div class="wallet-hero">
         <div class="wallet-balance">
             <div class="lbl">Solde disponible</div>
-            <div class="amount"><?= esc(number_format((float) ($user['solde'] ?? 0), 2, ',', ' ')) ?> Ar</div>
+            <div class="amount"><?= esc(number_format((float) (session('solde') ?? 0), 2, ',', ' ')) ?> Ar</div>
         </div>
         <div class="wallet-gold">
-            <div class="gl"><?= ! empty($user['is_gold']) ? '⭐ Statut Gold actif' : 'Pass Gold disponible' ?></div>
-            <div style="font-size:.85rem;opacity:.85"><?= ! empty($user['is_gold']) ? '-15% sur tous les regimes' : 'Activez Gold pour beneficier de -15%' ?></div>
+            <div class="gl"><?= ! empty(session('is_gold')) ? '⭐ Statut Gold actif' : 'Pass Gold disponible' ?></div>
+            <?php if (! empty(session('is_gold'))): ?>
+                <div style="font-size:.85rem;opacity:.85">-15% sur tous les regimes</div>
+            <?php else: ?>
+                <button class="btn-gold" id="btn-activate-gold" type="button">Activer Gold (29,99 Ar)</button>
+            <?php endif; ?>
         </div>
     </div>
 

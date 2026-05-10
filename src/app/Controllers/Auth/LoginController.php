@@ -24,7 +24,7 @@ class LoginController extends BaseController
 
     public function login()
     {
-        return $this->handleLogin('sportif');
+        return $this->handleLogin();
     }
 
     public function adminIndex()
@@ -41,7 +41,7 @@ class LoginController extends BaseController
 
     public function adminLogin()
     {
-        return $this->handleLogin('admin');
+        return $this->handleLogin();
     }
 
     public function coachIndex()
@@ -58,7 +58,7 @@ class LoginController extends BaseController
 
     public function coachLogin()
     {
-        return $this->handleLogin('coach');
+        return $this->handleLogin();
     }
 
     public function logout()
@@ -94,7 +94,7 @@ class LoginController extends BaseController
         return redirect()->to('/' . $config->hiddenLoginRoutes['coach'])->with('success', 'Session coach fermee.');
     }
 
-    private function handleLogin(string $expectedRole)
+    private function handleLogin()
     {
         $rules = [
             'email'    => 'required|valid_email',
@@ -113,10 +113,6 @@ class LoginController extends BaseController
         }
 
         $role = $user['role'] ?? 'sportif';
-
-        if ($role !== $expectedRole) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
 
         session()->set([
             'user_id'     => $user['id'],

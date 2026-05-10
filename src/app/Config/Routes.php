@@ -30,6 +30,7 @@ $routes->group('', ['filter' => 'auth'], static function (RouteCollection $route
     $routes->get('objectif', 'Front\RegimeController::objectif');
     $routes->post('objectif', 'Front\RegimeController::choisir');
     $routes->get('suggestions', 'Front\RegimeController::suggestions');
+    $routes->post('souscrire', 'Front\RegimeController::souscrire');
     $routes->get('portefeuille', 'Front\PorteMonnaieController::index');
     $routes->post('ajax/code', 'Front\PorteMonnaieController::redeemCode');
     $routes->post('ajax/gold', 'Front\PorteMonnaieController::activateGold');

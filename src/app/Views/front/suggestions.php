@@ -33,21 +33,28 @@
             <?php
             $tag = 'ideal';
             $tagLabel = 'IMC ideal';
-            if (($sante['objectif'] ?? '') === 'reduire') {
-                $tag = 'reduire';
-                $tagLabel = '↓ Perte de poids';
-            } elseif (($sante['objectif'] ?? '') === 'augmenter') {
+            $deltaMin = (float) ($regime['delta_poids_min'] ?? 0);
+            $deltaMax = (float) ($regime['delta_poids_max'] ?? 0);
+
+            if ($deltaMin >= 0 && $deltaMax >= 0) {
                 $tag = 'augmenter';
                 $tagLabel = '↑ Prise de masse';
+            } elseif ($deltaMin <= 0 && $deltaMax <= 0) {
+                $tag = 'reduire';
+                $tagLabel = '↓ Perte de poids';
             }
+
             $firstPrice = ! empty($regime['durees']) ? (float) $regime['durees'][0]['prix'] : 0.0;
             $firstDiscount = \App\Libraries\RegimeSuggestor::applyGoldDiscount($firstPrice, (bool) ($user['is_gold'] ?? false));
             $insufficient = (float) ($user['solde'] ?? 0) < $firstDiscount;
             ?>
             <div class="regime-card">
-                <div class="regime-card-head">
+                <div class="regime-card-head" style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap">
                     <h2><?= esc($regime['nom']) ?></h2>
                     <span class="regime-tag <?= esc($tag) ?>"><?= esc($tagLabel) ?></span>
+                    <?php if (! empty($regime['hasActiveSubscription'])): ?>
+                        <span style="font-size:.75rem;padding:4px 10px;border-radius:999px;background:#0f766e;color:#fff;">Actif</span>
+                    <?php endif; ?>
                 </div>
                 <div class="regime-card-body">
                     <p class="regime-desc"><?= esc($regime['description'] ?? '') ?></p>

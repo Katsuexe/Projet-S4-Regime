@@ -9,6 +9,7 @@ use App\Models\ActiviteModel;
 use App\Models\RegimeDureeModel;
 use App\Models\RegimeModel;
 use App\Models\UserModel;
+use App\Models\UserRegimeModel;
 use App\Models\UserSanteModel;
 
 class RegimeController extends BaseController
@@ -123,6 +124,40 @@ class RegimeController extends BaseController
         unset($regime);
 
         $activites = (new ActiviteModel())->orderBy('nom', 'ASC')->findAll();
+
+        $activeRegimeIds = [];
+        if ($userId) {
+            $userRegimeModel = new UserRegimeModel();
+            $subscriptions = $userRegimeModel->where('user_id', $userId)->findAll();
+            $dureeIds = array_unique(array_filter(array_column($subscriptions, 'regime_duree_id')));
+            $durees = [];
+            if (! empty($dureeIds)) {
+                $durees = $regimeDureeModel->whereIn('id', $dureeIds)->findAll();
+            }
+            $dureesById = array_column($durees, null, 'id');
+            $today = strtotime(date('Y-m-d'));
+
+            foreach ($subscriptions as $subscription) {
+                $duree = $dureesById[$subscription['regime_duree_id']] ?? null;
+                $endTimestamp = 0;
+                if (! empty($subscription['date_debut']) && $duree) {
+                    $startTimestamp = strtotime($subscription['date_debut']);
+                    $endTimestamp = $startTimestamp ? strtotime('+' . (int) $duree['duree_jours'] . ' days', $startTimestamp) : 0;
+                }
+                if ($endTimestamp && $today <= $endTimestamp) {
+                    $activeRegimeIds[$subscription['regime_id']] = true;
+                }
+            }
+        }
+
+        foreach ($regimes as &$regime) {
+            $regime['durees'] = $regimeDureeModel
+                ->where('regime_id', $regime['id'])
+                ->orderBy('duree_jours', 'ASC')
+                ->findAll();
+            $regime['hasActiveSubscription'] = ! empty($activeRegimeIds[$regime['id']]);
+        }
+        unset($regime);
 
         return view('front/suggestions', [
             'title' => 'Suggestions',

@@ -106,6 +106,34 @@ $imcPosition = max(0, min(100, ((float) ($imc ?? 0) / 40) * 100));
             </div>
         </div>
     </div>
+
+    <div class="section-title" style="margin-top:32px">Mes programmes et activités</div>
+    <div class="card">
+        <div class="card-head">Souscriptions</div>
+        <div class="card-body">
+            <?php if (empty($subscriptions)): ?>
+                <p>Aucune souscription en cours ou passée pour le moment.</p>
+            <?php else: ?>
+                <div class="subscription-list">
+                    <?php foreach ($subscriptions as $subscription): ?>
+                        <div class="subscription-item" style="border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:14px;margin-bottom:12px">
+                            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                                <div style="font-weight:700;color:var(--text)"><?= esc($subscription['regime_nom']) ?></div>
+                                <span style="font-size:.75rem;padding:4px 10px;border-radius:999px;color:#fff;background:<?= $subscription['active'] ? '#0f766e' : '#7b1fa2' ?>;text-transform:uppercase;letter-spacing:.04em">
+                                    <?= $subscription['active'] ? 'Actif' : 'Terminé' ?>
+                                </span>
+                            </div>
+                            <div style="font-size:.9rem;color:var(--text-3);margin:8px 0 4px">
+                                Durée : <?= esc($subscription['duree_label']) ?> • Début : <?= esc($subscription['date_debut'] ?? '-') ?> • Fin estimée : <?= esc($subscription['date_fin']) ?>
+                            </div>
+                            <div style="font-size:.9rem;color:var(--text-3);margin-bottom:4px">Activité : <?= esc($subscription['activite_nom']) ?></div>
+                            <div style="font-size:.9rem;color:var(--text-3)">Prix payé : <?= esc(number_format((float) ($subscription['prix_paye'] ?? 0), 2, ',', ' ')) ?> Ar</div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
 </div>
 <script src="<?= base_url('js/imc.js') ?>"></script>
 <?= $this->endSection() ?>

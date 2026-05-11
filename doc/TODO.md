@@ -221,10 +221,10 @@
 * [X] 🔴 Navbar admin : logo, liens modules, déconnexion
 * [X] 🔴 Messages flash (succès / erreur) sur toutes les actions — partial centralisée et injectée aussi côté admin
 * [X] 🔴 Pages d'erreur 403 / 404 personnalisées
-* [ ] 🟠 Responsive mobile (Bootstrap grid)
+* [X] 🟠 Responsive mobile (Bootstrap grid)
 * [X] 🟠 Confirmation JavaScript avant toute suppression (`confirm()`)
 * [X] 🟠 Indicateur de chargement sur les requêtes AJAX
-* [ ] 🟡 Transitions CSS entre les étapes d'inscription
+* [X] 🟡 Transitions CSS entre les étapes d'inscription
 * [X] 🟡 Favicon et titre de page dynamique (`<title>`)
 
 ---
@@ -285,6 +285,6 @@
 | M. CRUD Activités        | ✅ Logique + vues présentes                                     |
 | N. Codes admin            | ✅ Filtres présents · export CSV ajouté                       |
 | O. Paramètres admin      | ✅ Logique + vue présentes                                      |
-| P. Interface & UX         | ⚠️ Base front/admin solide · finitions UX encore incomplètes |
+| P. Interface & UX         | ✅ Base front/admin solide · responsive, loaders AJAX et transitions ajoutés |
 | Q. Sécurité             | ✅ Majeure partie OK                                             |
 | S. Livraison              | ⚠️ SQL présent · Seeds CI4 prêts · Forms manquants         |

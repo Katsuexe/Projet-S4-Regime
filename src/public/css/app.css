@@ -119,6 +119,7 @@ body.auth-page {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  animation: auth-step-enter 220ms ease-out;
 }
 
 .auth-header h1 {
@@ -155,12 +156,14 @@ body.auth-page {
   font-size: 0.9rem;
   color: var(--muted-dark);
   background: #f8fafc;
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
 .auth-progress-step.is-active {
   background: rgba(79, 126, 248, 0.12);
   border-color: rgba(79, 126, 248, 0.24);
   color: var(--submit);
+  transform: translateY(-1px);
 }
 
 .auth-progress-step.is-done {
@@ -503,6 +506,29 @@ html, body, * {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes auth-step-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-form,
+  .auth-progress-step,
+  #imc-preview-value,
+  input,
+  select {
+    animation: none;
+    transition: none;
   }
 }
 

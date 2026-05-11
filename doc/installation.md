@@ -8,7 +8,7 @@ cd projet-regime/src
 
 ## 2. Installation des dependances
 ```bash
-composer install
+php composer.phar install
 ```
 
 ## 3. Configuration de l'environnement

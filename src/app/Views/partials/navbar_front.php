@@ -19,7 +19,10 @@ $initials = strtoupper(substr((string) session('user_prenom'), 0, 1) . substr((s
             <span class="badge-gold">⭐ Gold</span>
         <?php endif; ?>
     </div>
-    <a href="<?= site_url('deconnexion') ?>" class="btn-outline" style="margin-left:12px">Deconnexion</a>
+    <form action="<?= site_url('deconnexion') ?>" method="post" style="margin-left:12px; display:inline">
+        <?= csrf_field() ?>
+        <button type="submit" class="btn-outline">Deconnexion</button>
+    </form>
     <div class="navbar-avatar" title="<?= esc(trim((session('user_prenom') ?? '') . ' ' . (session('user_nom') ?? ''))) ?>">
         <?= esc($initials !== '' ? $initials : 'U') ?>
     </div>

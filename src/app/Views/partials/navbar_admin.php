@@ -35,10 +35,13 @@ $currentUri = service('uri')->getPath();
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="<?= $logoutUrl ?>">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Se deconnecter</span>
-                        </a>
+                        <form method="post" action="<?= $logoutUrl ?>">
+                            <?= csrf_field() ?>
+                            <button type="submit" class="dropdown-item d-flex align-items-center" style="border:0;background:transparent;">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Se deconnecter</span>
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </li>

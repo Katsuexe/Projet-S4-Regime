@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const getCookieValue = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(';').shift();
+    }
+    return '';
+  };
+
+  const getCsrfToken = () => getCookieValue('csrf_cookie_name');
+
   const button = document.getElementById('btn-valider');
   const input = document.getElementById('code-input');
   const result = document.getElementById('code-result');
@@ -17,11 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
+      const csrfToken = getCsrfToken();
       const response = await fetch('/ajax/code', {
         method: 'POST',
+        credentials: 'same-origin',
         headers: {
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest',
+          ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {}),
         },
         body: JSON.stringify({ code }),
       });
@@ -54,11 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
+        const csrfToken = getCsrfToken();
         const response = await fetch('/ajax/gold', {
           method: 'POST',
+          credentials: 'same-origin',
           headers: {
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
+            ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {}),
           },
           body: JSON.stringify({}),
         });

@@ -139,9 +139,10 @@ $errorId = uniqid('error', true);
                                         $role = session()->get('auth_role') ?? 'sportif';
                                         $logoutUrl = $role === 'admin' ? '/espace-securise/admin/sortie' : ($role === 'coach' ? '/espace-securise/coach/sortie' : '/deconnexion');
                                     ?>
-                                        <div style="position:fixed; top:0.5rem; right:0.5rem; z-index:9999">
-                                            <a style="font-size:0.9rem; opacity:0.8; color:#444; background:#fff; padding:0.25rem 0.5rem; border-radius:4px; border:1px solid #eee; text-decoration:none" href="<?= esc($logoutUrl, 'attr') ?>">Déconnexion</a>
-                                        </div>
+                                        <form method="post" action="<?= esc($logoutUrl, 'attr') ?>" style="position:fixed; top:0.5rem; right:0.5rem; z-index:9999">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" style="font-size:0.9rem; opacity:0.8; color:#444; background:#fff; padding:0.25rem 0.5rem; border-radius:4px; border:1px solid #eee; text-decoration:none; cursor:pointer">Déconnexion</button>
+                                        </form>
                                     <?php endif; ?>
                                 <?php else : ?>
                                     ()

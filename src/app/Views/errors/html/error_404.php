@@ -86,7 +86,10 @@
         $role = session()->get('auth_role') ?? 'sportif';
         $logoutUrl = $role === 'admin' ? '/espace-securise/admin/sortie' : ($role === 'coach' ? '/espace-securise/coach/sortie' : '/deconnexion');
     ?>
-        <a class="logout-discrete" href="<?= esc($logoutUrl, 'attr') ?>">Déconnexion</a>
+        <form method="post" action="<?= esc($logoutUrl, 'attr') ?>">
+            <?= csrf_field() ?>
+            <button type="submit" class="logout-discrete">Déconnexion</button>
+        </form>
     <?php endif; ?>
     <div class="wrap">
         <h1>404</h1>

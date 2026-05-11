@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const getCookieValue = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(';').shift();
+    }
+    return '';
+  };
+
+  const getCsrfToken = () => getCookieValue('csrf_cookie_name');
+
   const taille = document.getElementById('taille');
   const poids = document.getElementById('poids');
   const output = document.getElementById('imc-preview-value');
@@ -19,11 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
+      const csrfToken = getCsrfToken();
       const response = await fetch('/ajax/imc', {
         method: 'POST',
+        credentials: 'same-origin',
         headers: {
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest',
+          ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {}),
         },
         body: JSON.stringify({
           taille: tailleValue,

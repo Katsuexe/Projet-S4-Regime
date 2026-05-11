@@ -16,13 +16,13 @@ $routes->get('inscription/etape2', 'Auth\RegisterStep2::index');
 $routes->post('inscription/etape2', 'Auth\RegisterStep2::store');
 $routes->get('connexion', 'Auth\LoginController::index');
 $routes->post('connexion', 'Auth\LoginController::login');
-$routes->get('deconnexion', 'Auth\LoginController::logout');
+$routes->post('deconnexion', 'Auth\LoginController::logout');
 $routes->get($authGroups->hiddenLoginRoutes['admin'], 'Auth\LoginController::adminIndex');
 $routes->post($authGroups->hiddenLoginRoutes['admin'], 'Auth\LoginController::adminLogin');
 $routes->get($authGroups->hiddenLoginRoutes['coach'], 'Auth\LoginController::coachIndex');
 $routes->post($authGroups->hiddenLoginRoutes['coach'], 'Auth\LoginController::coachLogin');
-$routes->get('espace-securise/admin/sortie', 'Auth\LoginController::adminLogout');
-$routes->get('espace-securise/coach/sortie', 'Auth\LoginController::coachLogout');
+$routes->post('espace-securise/admin/sortie', 'Auth\LoginController::adminLogout');
+$routes->post('espace-securise/coach/sortie', 'Auth\LoginController::coachLogout');
 
 $routes->group('', ['filter' => 'auth'], static function (RouteCollection $routes): void {
     $routes->get('profil', 'Front\ProfilController::index');

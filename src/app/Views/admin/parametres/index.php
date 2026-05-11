@@ -47,12 +47,24 @@
 
 <?= $this->section('scripts') ?>
 <script>
+const getCookieValue = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop().split(';').shift();
+  }
+  return '';
+};
+
+const getCsrfToken = () => getCookieValue('csrf_cookie_name');
+
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('.save-param').forEach(btn => {
         btn.addEventListener('click', function() {
             const cle    = this.dataset.cle;
             const valeur = document.getElementById('param-' + cle).value;
             const status = this.closest('.row').querySelector('.save-status');
+      const csrfToken = getCsrfToken();
             
             // On ajoute un etat de chargement sur le bouton
             const originalHtml = this.innerHTML;
@@ -64,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: { 
                     'Content-Type': 'application/json', 
                     'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': '<?= csrf_hash() ?>' 
+                ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {})
                 },
                 body: JSON.stringify({ cle: cle, valeur: valeur })
             })

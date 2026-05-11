@@ -29,6 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const setOutputMarkup = (markup) => {
     if (output) {
       output.innerHTML = markup;
+      output.classList.remove('is-visible');
+      requestAnimationFrame(() => {
+        output.classList.add('is-visible');
+      });
     }
   };
 
@@ -112,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
+      renderHint('neutral', 'Calcul en cours', 'Nous mettons a jour votre estimation IMC...');
       const response = await fetch(imcUrl, {
         method: 'POST',
         credentials: 'same-origin',

@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/front') ?>
 
 <?= $this->section('content') ?>
-<div class="page-content" data-redeem-url="<?= site_url('ajax/code') ?>" data-gold-url="<?= site_url('ajax/gold') ?>">
+<div class="page-content" data-redeem-url="<?= site_url('ajax/code') ?>" data-gold-url="<?= site_url('ajax/gold') ?>" data-gold-price="<?= esc(number_format((float) ($goldPrice ?? 29.99), 2, '.', '')) ?>">
     <div class="page-header">
         <div class="page-header-text">
             <div class="kicker">Mon compte</div>
@@ -22,7 +22,7 @@
             <?php if (! empty(session('is_gold'))): ?>
                 <div style="font-size:.85rem;opacity:.85">-15% sur tous les regimes</div>
             <?php else: ?>
-                <button class="btn-gold" id="btn-activate-gold" type="button">Activer Gold (29,99 Ar)</button>
+                <button class="btn-gold" id="btn-activate-gold" type="button">Activer Gold (<?= esc(number_format((float) ($goldPrice ?? 29.99), 2, ',', ' ')) ?> Ar)</button>
             <?php endif; ?>
         </div>
     </div>
@@ -39,6 +39,35 @@
     </div>
 
     <div class="card">
+        <div class="card-head">Historique de mes codes utilises</div>
+        <div class="card-body">
+            <?php if (empty($codeHistory)): ?>
+                <p id="code-history-empty">Aucun code utilise pour le moment.</p>
+                <table class="history-table" id="code-history-table" style="display:none">
+            <?php else: ?>
+                <table class="history-table" id="code-history-table">
+            <?php endif; ?>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Montant</th>
+                        <th>Date d'utilisation</th>
+                    </tr>
+                </thead>
+                <tbody id="code-history-body">
+                    <?php foreach ($codeHistory as $history): ?>
+                        <tr>
+                            <td><code><?= esc($history['code']) ?></code></td>
+                            <td><?= esc(number_format((float) ($history['montant'] ?? 0), 2, ',', ' ')) ?> Ar</td>
+                            <td><?= esc($history['used_at'] ?? '-') ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:24px">
         <div class="card-head">Ce que vous pouvez faire ici</div>
         <div class="card-body">
             <table class="history-table">

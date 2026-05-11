@@ -45,16 +45,16 @@
         <tbody>
           <?php foreach ($activites as $a): ?>
           <tr>
-            <td><?= $a['id'] ?></td>
+            <td><?= esc((string) $a['id']) ?></td>
             <td><strong><?= esc($a['nom']) ?></strong></td>
             <td><span class="badge bg-danger"><?= esc($a['calories_h']) ?> kcal/h</span></td>
             <td><?= esc($a['duree_min']) ?> min</td>
             <td><?= esc($a['description']) ?></td>
             <td>
-              <a href="<?= site_url('admin/activites/modifier/'.$a['id']) ?>" class="btn btn-sm btn-outline-primary">
+              <a href="<?= site_url('admin/activites/modifier/' . $a['id']) ?>" class="btn btn-sm btn-outline-primary">
                 <i class="bi bi-pencil"></i>
               </a>
-              <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalSuppr" data-id="<?= $a['id'] ?>" data-nom="<?= esc($a['nom']) ?>" data-route="admin/activites/supprimer/">
+              <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalSuppr" data-id="<?= esc((string) $a['id']) ?>" data-nom="<?= esc($a['nom']) ?>" data-route="admin/activites/supprimer/">
                 <i class="bi bi-trash"></i>
               </button>
             </td>

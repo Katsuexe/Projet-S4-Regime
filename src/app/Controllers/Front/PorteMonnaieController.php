@@ -8,7 +8,31 @@ class PorteMonnaieController extends BaseController
 {
     public function index()
     {
-        return view('front/porte_monnaie', ['title' => 'Mon portefeuille']);
+        $userId = (int) session('user_id');
+        $db = \Config\Database::connect();
+
+        $history = [];
+        if ($userId > 0) {
+            $history = $db->table('codes')
+                ->select('code, montant, used_at')
+                ->where('used_by', $userId)
+                ->where('is_used', 1)
+                ->orderBy('used_at', 'DESC')
+                ->get()
+                ->getResultArray();
+        }
+
+        $goldPrice = 29.99;
+        $param = $db->table('parametres')->where('cle', 'prix_gold')->get()->getRowArray();
+        if (is_array($param) && isset($param['valeur'])) {
+            $goldPrice = (float) $param['valeur'];
+        }
+
+        return view('front/porte_monnaie', [
+            'title' => 'Mon portefeuille',
+            'codeHistory' => $history,
+            'goldPrice' => $goldPrice,
+        ]);
     }
 
     public function update()
@@ -66,8 +90,10 @@ class PorteMonnaieController extends BaseController
 
         return $this->respondJson([
             'success' => true,
+            'code' => $codeRow->code,
             'montant' => $codeRow->montant,
-            'solde' => $user->solde
+            'solde' => $user->solde,
+            'used_at' => date('Y-m-d H:i:s'),
         ]);
     }
 

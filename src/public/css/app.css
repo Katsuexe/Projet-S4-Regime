@@ -355,6 +355,14 @@ html, body, * {
 
 #imc-preview-value {
   min-height: 124px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+#imc-preview-value.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .imc-result {
@@ -471,6 +479,31 @@ html, body, * {
   font-size: 0.92rem;
   line-height: 1.5;
   color: var(--text);
+}
+
+.spinner-inline {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: currentColor;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+}
+
+.btn-primary.is-loading,
+.btn-gold.is-loading {
+  pointer-events: none;
+  opacity: 0.85;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .auth-panel p {

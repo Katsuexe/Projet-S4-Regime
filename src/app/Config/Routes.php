@@ -23,6 +23,7 @@ $routes->get($authGroups->hiddenLoginRoutes['coach'], 'Auth\LoginController::coa
 $routes->post($authGroups->hiddenLoginRoutes['coach'], 'Auth\LoginController::coachLogin');
 $routes->post('espace-securise/admin/sortie', 'Auth\LoginController::adminLogout');
 $routes->post('espace-securise/coach/sortie', 'Auth\LoginController::coachLogout');
+$routes->post('ajax/imc', 'Front\ImcController::calculerImc');
 
 $routes->group('', ['filter' => 'auth'], static function (RouteCollection $routes): void {
     $routes->get('profil', 'Front\ProfilController::index');
@@ -32,6 +33,7 @@ $routes->group('', ['filter' => 'auth'], static function (RouteCollection $route
     $routes->get('suggestions', 'Front\RegimeController::suggestions');
     $routes->post('souscrire', 'Front\RegimeController::souscrire');
     $routes->get('portefeuille', 'Front\PorteMonnaieController::index');
+    $routes->get('export-pdf/(:num)', 'Front\PdfController::export/$1');
     $routes->post('ajax/code', 'Front\PorteMonnaieController::redeemCode');
     $routes->post('ajax/gold', 'Front\PorteMonnaieController::activateGold');
 });

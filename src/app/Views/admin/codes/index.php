@@ -12,10 +12,6 @@
 </div>
 
 <section class="section">
-  <?php if (session()->getFlashdata('success')): ?>
-      <div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div>
-  <?php endif; ?>
-
   <div class="d-flex justify-content-between mb-3 align-items-center">
     <div class="d-flex align-items-center gap-2">
       <label class="form-label mb-0 fw-bold">Filtre :</label>
@@ -45,9 +41,9 @@
         </thead>
         <tbody>
           <?php foreach ($codes as $c): ?>
-          <tr data-statut="<?= $c['is_used'] ?>">
+          <tr data-statut="<?= esc((string) $c['is_used']) ?>">
             <td><code class="fs-6"><?= esc($c['code']) ?></code></td>
-            <td><strong><?= number_format($c['montant'], 2) ?> €</strong></td>
+            <td><strong><?= esc(number_format((float) $c['montant'], 2, ',', ' ')) ?> Ar</strong></td>
             <td>
               <?php if ($c['is_used']): ?>
                 <span class="badge bg-secondary">Utilisé</span>

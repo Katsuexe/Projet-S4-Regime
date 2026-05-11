@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const data = await response.json();
-      output.textContent = `IMC estime : ${data.imc} - ${data.categorie} - Poids ideal : ${data.poids_ideal} kg`;
+      output.textContent = `IMC estime : ${data.imc} - ${data.categorie} - Poids ideal : ${data.poids_ideal} kg - IMC ideal : ${data.fourchette_ideale}`;
 
       if (live) {
         live.textContent = data.imc;
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (catLive) {
         catLive.textContent = data.categorie;
-        catLive.className = `imc-cat ${data.imc < 18.5 || data.imc >= 30 ? 'obese' : (data.imc < 25 ? 'normal' : 'surpoid')}`;
+        catLive.className = `imc-cat ${data.couleur || (data.imc < 18.5 || data.imc >= 30 ? 'obese' : (data.imc < 25 ? 'normal' : 'surpoid'))}`;
       }
     } catch (error) {
       output.textContent = 'Impossible de calculer l IMC pour le moment.';

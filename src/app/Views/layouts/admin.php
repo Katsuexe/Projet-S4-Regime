@@ -21,6 +21,7 @@
 <body>
     <?= view('partials/navbar_admin', ['pageTitle' => $title ?? 'Espace interne']) ?>
     <main id="main" class="main">
+        <?= view('partials/flash_messages') ?>
         <?= $this->renderSection('content') ?>
     </main>
     <footer id="footer" class="footer">

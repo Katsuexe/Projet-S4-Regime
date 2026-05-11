@@ -12,10 +12,6 @@
 </div>
 
 <section class="section dashboard">
-    <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div>
-    <?php endif; ?>
-
     <div class="row">
         <!-- Left side columns -->
         <div class="col-lg-8">
@@ -31,7 +27,7 @@
                                     <i class="bi bi-people"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h6><?= $stats['nb_sportifs'] ?></h6>
+                                    <h6><?= esc((string) $stats['nb_sportifs']) ?></h6>
                                 </div>
                             </div>
                         </div>
@@ -47,7 +43,7 @@
                                     <i class="bi bi-star"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h6><?= $stats['nb_gold'] ?></h6>
+                                    <h6><?= esc((string) $stats['nb_gold']) ?></h6>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +59,7 @@
                                     <i class="bi bi-wallet2"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h6><?= number_format($stats['solde_moyen'], 2) ?> €</h6>
+                                    <h6><?= esc(number_format((float) $stats['solde_moyen'], 2, ',', ' ')) ?> Ar</h6>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +75,23 @@
                                     <i class="bi bi-cash-coin"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h6><?= number_format($stats['revenus_total'], 2) ?> €</h6>
+                                    <h6><?= esc(number_format((float) $stats['revenus_total'], 2, ',', ' ')) ?> Ar</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card revenue-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Revenus Gold <span>| Remises appliquees</span></h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-stars"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6><?= esc(number_format((float) $stats['revenus_gold'], 2, ',', ' ')) ?> Ar</h6>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +107,7 @@
                                     <i class="bi bi-ticket-perforated"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h6><?= $stats['codes_libres'] ?></h6>
+                                    <h6><?= esc((string) $stats['codes_libres']) ?></h6>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +123,7 @@
                                     <i class="bi bi-check2-circle"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h6><?= $stats['codes_utilises'] ?></h6>
+                                    <h6><?= esc((string) $stats['codes_utilises']) ?></h6>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +134,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Souscriptions <span>/ 7 derniers jours</span></h5>
+                            <h5 class="card-title">Souscriptions <span>/ par mois</span></h5>
                             <div id="barChart"></div>
                         </div>
                     </div>
@@ -147,10 +159,10 @@
                                     <?php foreach($tableau_croise_1 as $row): ?>
                                     <tr>
                                         <td><?= esc($row['nom']) ?></td>
-                                        <td><?= $row['augmenter'] ?></td>
-                                        <td><?= $row['reduire'] ?></td>
-                                        <td><?= $row['ideal'] ?></td>
-                                        <td><strong><?= $row['total'] ?></strong></td>
+                                        <td><?= esc((string) $row['augmenter']) ?></td>
+                                        <td><?= esc((string) $row['reduire']) ?></td>
+                                        <td><?= esc((string) $row['ideal']) ?></td>
+                                        <td><strong><?= esc((string) $row['total']) ?></strong></td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -179,8 +191,8 @@
                                     <tr>
                                         <td><?= esc($achat['prenom'] . ' ' . $achat['nom']) ?></td>
                                         <td><?= esc($achat['regime']) ?></td>
-                                        <td><?= $achat['duree_jours'] ?> j</td>
-                                        <td><?= number_format($achat['prix_paye'], 2) ?> Ar</td>
+                                        <td><?= esc((string) $achat['duree_jours']) ?> j</td>
+                                        <td><?= esc(number_format((float) $achat['prix_paye'], 2, ',', ' ')) ?> Ar</td>
                                         <td>
                                             <?php if($achat['is_gold']): ?>
                                                 <span class="badge bg-warning text-dark"><i class="bi bi-star-fill"></i></span>
@@ -236,13 +248,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     // Bar Chart
     const barData = <?= $chart_souscriptions ?>;
-    const dates = barData.map(item => item.date);
+    const dates = barData.map(item => item.mois);
     const counts = barData.map(item => item.nb);
 
     new ApexCharts(document.querySelector("#barChart"), {
         series: [{ name: 'Souscriptions', data: counts }],
-        chart: { type: 'bar', height: 350 },
-        plotOptions: { bar: { borderRadius: 4, horizontal: false, } },
+        chart: { type: 'line', height: 350 },
+        stroke: { curve: 'smooth', width: 3 },
+        markers: { size: 5 },
         dataLabels: { enabled: false },
         xaxis: { categories: dates },
         colors: ['#8B4513']

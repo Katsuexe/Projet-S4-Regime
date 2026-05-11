@@ -131,6 +131,9 @@ $imcPosition = max(0, min(100, ((float) ($imc ?? 0) / 40) * 100));
                             </div>
                             <div style="font-size:.9rem;color:var(--text-3);margin-bottom:4px">Activité : <?= esc($subscription['activite_nom']) ?></div>
                             <div style="font-size:.9rem;color:var(--text-3)">Prix payé : <?= esc(number_format((float) ($subscription['prix_paye'] ?? 0), 2, ',', ' ')) ?> Ar</div>
+                            <div class="action-row" style="margin-top:10px;justify-content:flex-start">
+                                <a href="<?= site_url('export-pdf/' . $subscription['id']) ?>" class="btn-outline">Exporter en PDF</a>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>

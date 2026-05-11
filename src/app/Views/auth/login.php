@@ -19,7 +19,7 @@ $label = $labels[$space] ?? $labels['sportif'];
         default => site_url('connexion'),
     };
     ?>
-    <form action="<?= $action ?>" method="post" novalidate class="auth-form auth-form-login">
+    <form action="<?= esc($action) ?>" method="post" novalidate class="auth-form auth-form-login">
         <?= csrf_field() ?>
 
         <div class="auth-header">

@@ -15,16 +15,17 @@ class DashboardController extends BaseController
             'nb_gold'        => $db->table('users')->where('is_gold', 1)->countAllResults(),
             'solde_moyen'    => $db->query('SELECT AVG(solde) as v FROM users WHERE role="sportif"')->getRow()->v ?? 0,
             'revenus_total'  => $db->query('SELECT SUM(prix_paye) as v FROM user_regimes')->getRow()->v ?? 0,
+            'revenus_gold'   => $db->query('SELECT SUM(prix_paye) as v FROM user_regimes WHERE gold_remise = 1')->getRow()->v ?? 0,
             'codes_libres'   => $db->table('codes')->where('is_used', 0)->countAllResults(),
             'codes_utilises' => $db->table('codes')->where('is_used', 1)->countAllResults(),
         ];
         
         $chart_souscriptions = $db->query('
-            SELECT DATE(created_at) as date, COUNT(*) as nb 
+            SELECT DATE_FORMAT(created_at, "%Y-%m") as mois, COUNT(*) as nb 
             FROM user_regimes 
-            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) 
-            GROUP BY DATE(created_at) 
-            ORDER BY date ASC
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH) 
+            GROUP BY DATE_FORMAT(created_at, "%Y-%m") 
+            ORDER BY mois ASC
         ')->getResultArray();
 
         $chart_objectifs = $db->query('
@@ -84,4 +85,3 @@ class DashboardController extends BaseController
         ]);
     }
 }
-

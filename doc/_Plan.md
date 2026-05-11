@@ -603,22 +603,22 @@ class RegimeSeeder extends Seeder
 
 ## 13. Récapitulatif des fonctionnalités & avancement
 
-| Fonctionnalité | Module | Priorité | Notes |
-|---|---|---|---|
-| Inscription 2 étapes | Auth | 🔴 Critique | Session entre étapes |
-| Login / Logout | Auth | 🔴 Critique | password_hash |
-| Calcul IMC live | Profil | 🔴 Critique | AJAX + PHP |
-| Choix objectif | Front | 🔴 Critique | 3 options |
-| Suggestions régime | Front | 🔴 Critique | Logique métier |
-| Export PDF | Front | 🟠 Important | dompdf |
-| Portefeuille + codes | Front | 🟠 Important | AJAX |
-| Option Gold 15% | Front | 🟠 Important | flag is_gold |
-| CRUD Régimes | Admin | 🔴 Critique | % viande/poisson |
-| Prix par durée | Admin | 🔴 Critique | table regime_durees |
-| CRUD Activités | Admin | 🟠 Important | |
-| Validation codes | Admin | 🟠 Important | |
-| Dashboard stats | Admin | 🟡 Bonus | Chart.js |
-| CRUD Paramètres | Admin | 🟡 Bonus | clé/valeur |
+| Fonctionnalité | Module | Priorité | Notes | Responsable |
+|---|---|---|---|---|
+| Inscription 2 étapes | Auth | 🔴 Critique | Session entre étapes | Katsu |
+| Login / Logout | Auth | 🔴 Critique | password_hash | Katsu |
+| Calcul IMC live | Profil | 🔴 Critique | AJAX + PHP | Katsu |
+| Choix objectif | Front | 🔴 Critique | 3 options | IVO |
+| Suggestions régime | Front | 🔴 Critique | Logique métier | IVO |
+| Export PDF | Front | 🟠 Important | dompdf | Katsu |
+| Portefeuille + codes | Front | 🟠 Important | AJAX | Katsu |
+| Option Gold 15% | Front | 🟠 Important | flag is_gold | Katsu |
+| CRUD Régimes | Admin | 🔴 Critique | % viande/poisson | IVO |
+| Prix par durée | Admin | 🔴 Critique | table regime_durees | Katsu |
+| CRUD Activités | Admin | 🟠 Important |  | Karen |
+| Validation codes | Admin | 🟠 Important |  | Katsu (lead), Karen (support) |
+| Dashboard stats | Admin | 🟡 Bonus | Chart.js | Katsu (lead), Karen (support) |
+| CRUD Paramètres | Admin | 🟡 Bonus | clé/valeur | IVO |
 
 ---
 
@@ -655,3 +655,18 @@ php spark db:seed DatabaseSeeder
 # Lancer le serveur
 php spark serve
 ```
+
+## 16. Personnaliser la route cachée (Admin / Coach)
+
+Pour plus de sécurité, les pages de connexion pour les comptes `admin` et `coach` sont exposées via des routes "cachées" configurables. Ces routes sont lues depuis `Config\\AuthGroups` et peuvent être définies dans le fichier `.env`.
+
+Exemple à ajouter dans `.env` :
+
+```env
+auth.hiddenAdminRoute=espace-securise/mon-admin-secret/connexion
+auth.hiddenCoachRoute=espace-securise/mon-coach-secret/connexion
+```
+
+Après modification, redémarrez le serveur (`php spark serve`) ou videz le cache si nécessaire : `php spark cache:clear`.
+
+Voir également `src/app/Config/AuthGroups.php` pour les valeurs par défaut.

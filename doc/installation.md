@@ -57,3 +57,24 @@ php spark serve
 ```
 
 Acceder a l'application : http://localhost:8080
+
+## Personnaliser la route cachée (admin / coach)
+
+L'application utilise des "routes cachées" pour l'accès administrateur et coach. Ces routes sont lues depuis la configuration `Config\AuthGroups` et peuvent être définies dans votre fichier `.env`.
+
+Exemples à ajouter dans ` .env ` (sans slash initial) :
+
+```env
+auth.hiddenAdminRoute=espace-securise/portail-admin-9xk7/connexion
+auth.hiddenCoachRoute=espace-securise/portail-coach-4mp2/connexion
+```
+
+Notes :
+- La clé utilisée par le code est `auth.hiddenAdminRoute` et `auth.hiddenCoachRoute` (exactement comme ci‑dessus).
+- Après modification du `.env`, redémarrez le serveur de développement (`php spark serve`) ou videz le cache si vous avez mis en cache la config :
+
+```bash
+php spark cache:clear
+```
+
+Les routes seront alors disponibles à l'URL que vous avez choisie (par exemple `/espace-securise/portail-admin-9xk7/connexion`).

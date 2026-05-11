@@ -5,7 +5,7 @@
 ### Espace Utilisateur
 - Inscription en 2 etapes : Informations personnelles puis donnees sante
 - Calcul IMC en temps reel : AJAX avec visualisation dynamique
-- Suggestions personnalisees : Regimes adaptes selon objectif (augmenter/reduire/maintenir)
+- Suggestions personnalisees : Regimes adaptes selon objectif (augmenter/reduire/ideal)
 - Portefeuille virtuel : Credits avec validation de codes promo
 - Option Gold : Reduction 15% sur les abonnements
 - Export PDF : Programme personnalise telechargeable
@@ -23,7 +23,7 @@
 1. S'inscrire : Formulaire en 2 etapes (infos perso → donnees sante)
 2. Se connecter : Acces a l'espace personnel
 3. Calculer IMC : Saisie taille/poids avec calcul automatique
-4. Choisir objectif : Augmenter, reduire ou maintenir poids
+4. Choisir objectif : Augmenter, reduire ou atteindre un IMC ideal
 5. Consulter suggestions : Regimes et activites adaptes
 6. S'abonner : Paiement virtuel avec portefeuille
 7. Exporter PDF : Telechargement du programme personnalise

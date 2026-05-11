@@ -5,7 +5,7 @@
 - **Cours** : L2 S4 Informatique
 - **Type** : Projet de Programmation Web Avancee
 - **Date de rendu** : lundi 11 mai 2026
-- **Taille de l'equipe** : 3 developpeurs]
+- **Taille de l'equipe** : 3 developpeurs
 
 ## Specificites du Projet
 

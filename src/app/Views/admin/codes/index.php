@@ -1,6 +1,8 @@
-<?= $this->extend('layouts/admin') ?>
-
-<?= $this->section('content') ?>
+<?=
+$this->extend('layouts/admin');
+$Codes = isset($codes) ? $codes : [];
+$this->section('content')
+?>
 <div class="pagetitle">
   <h1>Codes Portefeuille</h1>
   <nav>
@@ -45,8 +47,10 @@
           </tr>
         </thead>
         <tbody>
-          <?php foreach ($codes as $c): ?>
+          <?php foreach ($Codes as $c): ?>
+            <!-- présent dans le controller -->
           <tr data-statut="<?= esc((string) $c['is_used']) ?>">
+            <!-- TODO fix Expected type 'string|Stringable|null'. Found 'array<int|string, array<int|string, mixed>|string>'. WARNING -->
             <td><code class="fs-6"><?= esc($c['code']) ?></code></td>
             <td><strong><?= esc(number_format((float) $c['montant'], 2, ',', ' ')) ?> Ar</strong></td>
             <td>

@@ -42,7 +42,7 @@
             </label>
         </div>
         <?php if (! empty($errors['objectif'])): ?>
-            <div class="flash flash-error"><?= esc($errors['objectif']) ?></div>
+            <div class="flash flash-error"><?= is_array($errors['objectif']) ? esc(implode('<br>', $errors['objectif'])) : esc($errors['objectif']) ?></div>
         <?php endif; ?>
         <div class="action-row">
             <a href="<?= site_url('profil') ?>" class="btn-outline">Retour au profil</a>

@@ -1,28 +1,37 @@
 <?= $this->extend('layouts/front') ?>
 
 <?= $this->section('content') ?>
+<?php
+// Initialisation des variables pour éviter les avertissements d'analyse statique
+$user = $user ?? [];
+$sante = $sante ?? [];
+$imc = $imc ?? 0;
+$subscriptions = $subscriptions ?? [];
+$regimes = $regimes ?? [];
+$activites = $activites ?? [];
+?>
 <div class="page-content">
     <?= view('partials/flash_messages') ?>
 
     <div class="page-header">
         <div class="page-header-text">
-            <div class="kicker">Bonjour <?= esc($user['prenom'] ?? session('user_prenom') ?? 'Sportif') ?></div>
+            <div class="kicker">Bonjour <?= esc((string) ($user['prenom'] ?? session('user_prenom') ?? 'Sportif')) ?></div>
             <h1>Suggestions adaptees a votre objectif</h1>
             <p>Nous avons retenu des regimes simples a comprendre, avec les durees, le prix et l'activite conseillee pour vous aider a choisir vite.</p>
         </div>
 
         <div class="imc-widget">
             <div class="title">Votre IMC</div>
-            <div class="imc-value"><?= esc(number_format((float) ($imc ?? 0), 1, '.', '')) ?></div>
+            <div class="imc-value"><?= esc(number_format((float) $imc, 1, '.', '')) ?></div>
             <?php
             $categorieClass = 'normal';
-            if (($imc ?? 0) >= 25 && ($imc ?? 0) < 30) {
+            if ($imc >= 25 && $imc < 30) {
                 $categorieClass = 'surpoid';
-            } elseif (($imc ?? 0) < 18.5 || ($imc ?? 0) >= 30) {
+            } elseif ($imc < 18.5 || $imc >= 30) {
                 $categorieClass = 'obese';
             }
             ?>
-            <span class="imc-cat <?= esc($categorieClass) ?>"><?= esc(\App\Libraries\ImcCalculator::categorie((float) ($imc ?? 0))) ?></span>
+            <span class="imc-cat <?= esc($categorieClass) ?>"><?= esc((string) \App\Libraries\ImcCalculator::categorie((float) $imc)) ?></span>
             <div class="imc-ideal">Objectif : <?= esc($sante['objectif'] ?? '-') ?></div>
         </div>
     </div>
@@ -37,13 +46,13 @@
                     <?php foreach ($subscriptions as $subscription): ?>
                         <div class="subscription-item" style="border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:14px;margin-bottom:12px">
                             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-                                <div style="font-weight:700;color:var(--text)"><?= esc($subscription['regime_nom'] ?? 'Programme') ?></div>
+                                <div style="font-weight:700;color:var(--text)"><?= esc((string) ($subscription['regime_nom'] ?? 'Programme')) ?></div>
                                 <span style="font-size:.75rem;padding:4px 10px;border-radius:999px;color:#fff;background:<?= ! empty($subscription['active']) ? '#0f766e' : '#7b1fa2' ?>;text-transform:uppercase;letter-spacing:.04em">
                                     <?= ! empty($subscription['active']) ? 'Actif' : 'Termine' ?>
                                 </span>
                             </div>
                             <div style="font-size:.9rem;color:var(--text-3);margin:8px 0 4px">
-                                Durée : <?= esc($subscription['duree_label'] ?? '-') ?> • Début : <?= esc($subscription['date_debut'] ?? '-') ?> • Fin estimée : <?= esc($subscription['date_fin'] ?? '-') ?>
+                                Durée : <?= esc((string) ($subscription['duree_label'] ?? '-')) ?> • Début : <?= esc((string) ($subscription['date_debut'] ?? '-')) ?> • Fin estimée : <?= esc((string) ($subscription['date_fin'] ?? '-')) ?>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -75,14 +84,14 @@
             ?>
             <div class="regime-card">
                 <div class="regime-card-head" style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap">
-                    <h2><?= esc($regime['nom']) ?></h2>
+                    <h2><?= esc((string) $regime['nom']) ?></h2>
                     <span class="regime-tag <?= esc($tag) ?>"><?= esc($tagLabel) ?></span>
                     <?php if (! empty($regime['hasActiveSubscription'])): ?>
                         <span style="font-size:.75rem;padding:4px 10px;border-radius:999px;background:#0f766e;color:#fff;">Actif</span>
                     <?php endif; ?>
                 </div>
                 <div class="regime-card-body">
-                    <p class="regime-desc"><?= esc($regime['description'] ?? '') ?></p>
+                    <p class="regime-desc"><?= esc((string) ($regime['description'] ?? '')) ?></p>
 
                     <div>
                         <div class="compo-label">Composition</div>
@@ -139,7 +148,7 @@
                                 <select id="activite-<?= esc((string) $regime['id']) ?>" name="activite_id">
                                     <option value="">Sans activite complementaire</option>
                                     <?php foreach ($activites as $activite): ?>
-                                        <option value="<?= esc((string) $activite['id']) ?>"><?= esc($activite['nom']) ?> - <?= esc((string) $activite['duree_min']) ?> min/jour</option>
+                                        <option value="<?= esc((string) $activite['id']) ?>"><?= esc((string) $activite['nom']) ?> - <?= esc((string) $activite['duree_min']) ?> min/jour</option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -164,8 +173,8 @@
         <?php foreach ($activites as $activite): ?>
             <div class="card">
                 <div class="card-body">
-                    <h3 style="font-size:1rem;margin-bottom:8px"><?= esc($activite['nom']) ?></h3>
-                    <p style="color:var(--text-3);line-height:1.6;margin-bottom:14px"><?= esc($activite['description'] ?? '') ?></p>
+                    <h3 style="font-size:1rem;margin-bottom:8px"><?= esc((string) $activite['nom']) ?></h3>
+                    <p style="color:var(--text-3);line-height:1.6;margin-bottom:14px"><?= esc((string) ($activite['description'] ?? '')) ?></p>
                     <div class="profil-stats">
                         <div class="profil-stat"><div class="val"><?= esc((string) ($activite['calories_h'] ?? 0)) ?></div><div class="lbl">Calories/h</div></div>
                         <div class="profil-stat"><div class="val"><?= esc((string) ($activite['duree_min'] ?? 0)) ?> min</div><div class="lbl">Duree</div></div>

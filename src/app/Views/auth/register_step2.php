@@ -1,6 +1,7 @@
 <?= $this->extend('layouts/front') ?>
 
 <?= $this->section('content') ?>
+<!-- fix Expected type 'string|Stringable|null'. Found 'array<int|string, array<int|string, mixed>|string>'. WARNING -->
 <?php $errors = session('errors') ?? []; ?>
 <section class="auth-wrapper" data-imc-url="<?= site_url('ajax/imc') ?>">
     <form action="<?= site_url('inscription/etape2') ?>" method="post" novalidate class="auth-form">

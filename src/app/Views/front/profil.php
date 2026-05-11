@@ -6,7 +6,7 @@
 $initials = strtoupper(substr((string) ($user['prenom'] ?? ''), 0, 1) . substr((string) ($user['nom'] ?? ''), 0, 1));
 $imcPosition = max(0, min(100, ((float) ($imc ?? 0) / 40) * 100));
 ?>
-<div class="page-content" data-imc-url="<?= site_url('ajax/imc') ?>">
+<div class="page-content">
     <div class="page-header">
         <div class="page-header-text">
             <div class="kicker">Mon espace</div>
@@ -22,17 +22,16 @@ $imcPosition = max(0, min(100, ((float) ($imc ?? 0) / 40) * 100));
             <div class="card">
                 <div class="card-body" style="text-align:center">
                     <div class="profil-avatar"><?= esc($initials !== '' ? $initials : 'U') ?></div>
-                    <div class="profil-name"><?= esc(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? '')) ?></div>
-                    <div class="profil-email"><?= esc($user['email'] ?? '') ?></div>
+                    <div class="profil-name"><?= esc((string) ($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? '')) ?></div>
+                    <div class="profil-email"><?= esc((string) ($user['email'] ?? '')) ?></div>
                     <?php if (! empty($user['is_gold'])): ?>
                         <span class="badge-gold" style="justify-content:center">⭐ Membre Gold</span>
                     <?php endif; ?>
                     <div class="profil-stats" style="margin-top:16px">
                         <div class="profil-stat"><div class="val"><?= esc(number_format((float) ($user['solde'] ?? 0), 2, ',', ' ')) ?> Ar</div><div class="lbl">Solde</div></div>
-                        <div class="profil-stat"><div class="val"><?= esc($user['genre'] ?? '-') ?></div><div class="lbl">Genre</div></div>
+                        <div class="profil-stat"><div class="val"><?= esc((string) ($user['genre'] ?? '-')) ?></div><div class="lbl">Genre</div></div>
                         <div class="profil-stat"><div class="val"><?= esc((string) ($sante['taille'] ?? '-')) ?> cm</div><div class="lbl">Taille</div></div>
-                        <div class="profil-stat"><div class="val"><?= esc($sante['objectif'] ?? '-') ?></div><div class="lbl">Objectif</div></div>
-                    </div>
+                        <div class="profil-email"><?= esc((string) ($user['email'] ?? '')) ?></div>                    </div>
                     <div class="action-row" style="margin-top:16px;justify-content:center">
                         <a href="<?= site_url('objectif') ?>" class="btn-outline">Changer d'objectif</a>
                     </div>
@@ -61,7 +60,7 @@ $imcPosition = max(0, min(100, ((float) ($imc ?? 0) / 40) * 100));
                     <div class="profil-stats" style="margin-top:12px">
                         <div class="profil-stat"><div class="val"><?= esc((string) ($sante['poids'] ?? '-')) ?> kg</div><div class="lbl">Poids</div></div>
                         <div class="profil-stat"><div class="val"><?= esc((string) ($sante['taille'] ?? '-')) ?> cm</div><div class="lbl">Taille</div></div>
-                        <div class="profil-stat" style="grid-column:1/-1"><div class="val"><?= esc(isset($ideal['poids_ideal']) ? (string) $ideal['poids_ideal'] : '-') ?> kg</div><div class="lbl">Poids ideal estime</div></div>
+                        <div class="profil-stat" style="grid-column:1/-1"><div class="val"><?= esc((string) ($ideal['poids_ideal'] ?? '-')) ?> kg</div><div class="lbl">Poids ideal estime</div></div>
                     </div>
                 </div>
             </div>
@@ -76,12 +75,12 @@ $imcPosition = max(0, min(100, ((float) ($imc ?? 0) / 40) * 100));
                         <div class="form-group">
                             <label for="taille">Taille (cm)</label>
                             <input type="number" id="taille" name="taille" min="100" max="250" step="0.1" value="<?= esc(old('taille', $sante['taille'] ?? '')) ?>">
-                            <span class="form-error"><?= esc($errors['taille'] ?? '') ?></span>
+                            <span class="form-error"><?= is_array($errors['taille'] ?? null) ? esc(implode('<br>', $errors['taille'])) : esc((string) ($errors['taille'] ?? '')) ?></span>
                         </div>
                         <div class="form-group">
                             <label for="poids">Poids (kg)</label>
                             <input type="number" id="poids" name="poids" min="30" max="300" step="0.1" value="<?= esc(old('poids', $sante['poids'] ?? '')) ?>">
-                            <span class="form-error"><?= esc($errors['poids'] ?? '') ?></span>
+                            <span class="form-error"><?= is_array($errors['poids'] ?? null) ? esc(implode('<br>', $errors['poids'])) : esc((string) ($errors['poids'] ?? '')) ?></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -92,13 +91,13 @@ $imcPosition = max(0, min(100, ((float) ($imc ?? 0) / 40) * 100));
                             <option value="reduire" <?= $objectif === 'reduire' ? 'selected' : '' ?>>Reduire mon poids</option>
                             <option value="ideal" <?= $objectif === 'ideal' ? 'selected' : '' ?>>Atteindre un IMC ideal</option>
                         </select>
-                        <span class="form-error"><?= esc($errors['objectif'] ?? '') ?></span>
+                        <span class="form-error"><?= is_array($errors['objectif'] ?? null) ? esc(implode('<br>', $errors['objectif'])) : esc((string) ($errors['objectif'] ?? '')) ?></span>
                     </div>
                     <div style="background:var(--blue-light);border-radius:var(--radius-md);padding:14px;margin-bottom:20px">
                         <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin-bottom:6px">Apercu IMC en direct</div>
                         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
                             <span id="imc-live" style="font-size:1.6rem;font-weight:700;color:var(--blue)"><?= esc(number_format((float) ($imc ?? 0), 1, '.', '')) ?></span>
-                            <span style="font-size:.8rem;color:var(--text-3);margin-left:auto">Poids ideal : <?= esc(isset($ideal['poids_ideal']) ? (string) $ideal['poids_ideal'] : '-') ?> kg</span>
+                            <span style="font-size:.8rem;color:var(--text-3);margin-left:auto">Poids ideal : <?= esc((string) ($ideal['poids_ideal'] ?? '-')) ?> kg</span>
                         </div>
                     </div>
                     <div class="action-row">
@@ -121,19 +120,16 @@ $imcPosition = max(0, min(100, ((float) ($imc ?? 0) / 40) * 100));
                     <?php foreach ($subscriptions as $subscription): ?>
                         <div class="subscription-item" style="border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:14px;margin-bottom:12px">
                             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-                                <div style="font-weight:700;color:var(--text)"><?= esc($subscription['regime_nom']) ?></div>
+                                <div style="font-weight:700;color:var(--text)"><?= esc((string) ($subscription['regime_nom'] ?? '')) ?></div>
                                 <span style="font-size:.75rem;padding:4px 10px;border-radius:999px;color:#fff;background:<?= $subscription['active'] ? '#0f766e' : '#7b1fa2' ?>;text-transform:uppercase;letter-spacing:.04em">
                                     <?= $subscription['active'] ? 'Actif' : 'Terminé' ?>
                                 </span>
                             </div>
                             <div style="font-size:.9rem;color:var(--text-3);margin:8px 0 4px">
-                                Durée : <?= esc($subscription['duree_label']) ?> • Début : <?= esc($subscription['date_debut'] ?? '-') ?> • Fin estimée : <?= esc($subscription['date_fin']) ?>
+                                Durée : <?= esc((string) ($subscription['duree_label'] ?? '')) ?> • Début : <?= esc((string) ($subscription['date_debut'] ?? '-')) ?> • Fin estimée : <?= esc((string) ($subscription['date_fin'] ?? '')) ?>
                             </div>
-                            <div style="font-size:.9rem;color:var(--text-3);margin-bottom:4px">Activité : <?= esc($subscription['activite_nom']) ?></div>
+                            <div style="font-size:.9rem;color:var(--text-3);margin-bottom:4px">Activité : <?= esc((string) ($subscription['activite_nom'] ?? '')) ?></div>
                             <div style="font-size:.9rem;color:var(--text-3)">Prix payé : <?= esc(number_format((float) ($subscription['prix_paye'] ?? 0), 2, ',', ' ')) ?> Ar</div>
-                            <div class="action-row" style="margin-top:10px;justify-content:flex-start">
-                                <a href="<?= site_url('export-pdf/' . $subscription['id']) ?>" class="btn-outline">Exporter en PDF</a>
-                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>

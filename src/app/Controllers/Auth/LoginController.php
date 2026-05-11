@@ -126,7 +126,7 @@ class LoginController extends BaseController
         ]);
 
         $config = config(AuthGroups::class);
-        $redirect = $config->defaultRedirects[$role] ?? '/';
+        $redirect = $this->resolvePostLoginRedirect($role, $config->defaultRedirects[$role] ?? '/');
 
         return redirect()->to($redirect)->with('success', 'Connexion reussie.');
     }
@@ -142,5 +142,27 @@ class LoginController extends BaseController
         $redirect = $config->defaultRedirects[$role] ?? '/';
 
         return redirect()->to($redirect);
+    }
+
+    private function resolvePostLoginRedirect(string $role, string $fallback): string
+    {
+        $intendedUrl = session()->get('intended_url');
+        $intendedRole = session()->get('intended_role');
+
+        session()->remove(['intended_url', 'intended_role']);
+
+        if (! is_string($intendedUrl) || $intendedUrl === '') {
+            return $fallback;
+        }
+
+        if ($intendedRole !== $role) {
+            return $fallback;
+        }
+
+        if (! str_starts_with($intendedUrl, '/')) {
+            return $fallback;
+        }
+
+        return $intendedUrl;
     }
 }

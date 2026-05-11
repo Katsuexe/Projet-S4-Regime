@@ -51,7 +51,7 @@
 * [X] 🔴 Déconnexion (`session()->destroy()`)
 * [X] 🔴 Page login admin séparée (`/admin/login`) — route cachée configurée via `AuthGroups`
 * [X] 🟠 Message flash d'erreur si mauvais identifiants
-* [ ] 🟠 Redirection vers page d'origine après login (si accès refusé)
+* [X] 🟠 Redirection vers page d'origine après login (si accès refusé)
 
 ---
 
@@ -272,7 +272,7 @@
 | ------------------------- | ---------------------------------------------------------------- |
 | A. Init & environnement   | ✅ Quasi complet (Git/Sheet non vérifiable)                     |
 | B. Base de données       | ✅ Migrations OK · seeders CI4 présents · SQL complet         |
-| C. Authentification       | ⚠️ Login présent · redirection post-auth à compléter       |
+| C. Authentification       | ✅ Login présent avec redirection post-auth                 |
 | D. Inscription 2 étapes  | ✅ Contrôleurs + vues + progression présents                   |
 | E. Profil utilisateur     | ✅ Contrôleur + vue profil présents                            |
 | F. IMC AJAX               | ✅ Route + endpoint + JS en place                                |

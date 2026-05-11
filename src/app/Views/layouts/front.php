@@ -633,13 +633,92 @@
             gap: 12px;
             flex-wrap: wrap;
         }
+        .subscription-item { overflow-wrap: anywhere; }
         @media (max-width: 768px) {
             .objectif-grid, .profil-grid, .form-row { grid-template-columns: 1fr; }
-            .regimes-grid { grid-template-columns: 1fr; }
+            .regimes-grid { grid-template-columns: minmax(0, 1fr); }
             .navbar { flex-wrap: wrap; gap: 12px; padding: 12px 16px; }
             .navbar-links { width: 100%; order: 3; justify-content: center; flex-wrap: wrap; }
             .page-header { flex-direction: column; }
             .wallet-hero, .code-input-wrap { flex-direction: column; }
+        }
+        @media (max-width: 640px) {
+            .page-content { padding: 24px 14px 56px; }
+            .navbar {
+                align-items: center;
+                flex-wrap: nowrap;
+                gap: 8px;
+            }
+            .navbar-logo {
+                width: auto;
+                flex: 0 0 auto;
+                font-size: 1rem;
+                margin-right: 0;
+            }
+            .navbar-links { display: none; }
+            .navbar-wallet {
+                order: 0;
+                flex: 1 1 auto;
+                width: auto;
+                min-width: 0;
+                margin-left: 0;
+                justify-content: center;
+                padding: 6px 8px;
+            }
+            .navbar-wallet a { min-width: 0; }
+            .navbar-wallet .label { display: none; }
+            .navbar-wallet .amount {
+                font-size: .78rem;
+                line-height: 1.1;
+                white-space: nowrap;
+            }
+            .badge-gold {
+                padding: 2px 6px;
+                font-size: .65rem;
+                white-space: nowrap;
+            }
+            .navbar-user {
+                flex: 0 0 auto;
+                margin-left: 0;
+            }
+            .navbar-user-menu {
+                right: 0;
+                min-width: min(220px, calc(100vw - 28px));
+            }
+            .page-header {
+                gap: 16px;
+                margin-bottom: 24px;
+            }
+            .page-header-text h1 { font-size: 1.45rem; }
+            .imc-widget,
+            .wallet-gold,
+            .btn-primary,
+            .btn-outline,
+            .btn-subscribe { width: 100%; }
+            .wallet-hero {
+                align-items: stretch;
+                padding: 24px 18px;
+                border-radius: var(--radius-lg);
+            }
+            .wallet-balance .amount { font-size: 2rem; }
+            .card-body { padding: 16px; }
+            .card-head { padding: 16px; }
+            .regime-card-head {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .regime-tag { width: fit-content; }
+            .duration-pills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .pill-label { width: 100%; }
+            .profil-stats { grid-template-columns: 1fr; }
+            .action-row {
+                justify-content: stretch;
+            }
+            .history-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
         }
     </style>
 </head>

@@ -1,8 +1,9 @@
 <?= $this->extend('layouts/front') ?>
 
 <?= $this->section('content') ?>
+<!-- fix Expected type 'string|Stringable|null'. Found 'array<int|string, array<int|string, mixed>|string>'. WARNING -->
 <?php $errors = session('errors') ?? []; ?>
-<section class="auth-wrapper">
+<section class="auth-wrapper" data-imc-url="<?= site_url('ajax/imc') ?>">
     <form action="<?= site_url('inscription/etape2') ?>" method="post" novalidate class="auth-form">
         <?= csrf_field() ?>
 
@@ -30,11 +31,9 @@
             <input type="number" step="0.1" id="poids" name="poids" value="<?= esc(old('poids')) ?>" inputmode="decimal" required>
             <span class="erreur"><?= esc($errors['poids'] ?? '') ?></span>
 
-            <div class="imc-preview">
-                <p class="imc-label">Apercu IMC</p>
+            <p class="imc-label">Apercu IMC</p>
                 <div id="imc-preview-value">Renseignez votre taille et votre poids pour voir une estimation.</div>
-            </div>
-        </fieldset>
+            </fieldset>
 
         <fieldset>
             <legend>Objectif sportif</legend>

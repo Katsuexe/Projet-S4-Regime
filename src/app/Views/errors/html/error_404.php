@@ -1,70 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title><?= lang('Errors.pageNotFound') ?></title>
+    <title>404 - Page introuvable</title>
 
     <style>
-        div.logo {
-            height: 200px;
-            width: 155px;
-            display: inline-block;
-            opacity: 0.08;
-            position: absolute;
-            top: 2rem;
-            left: 50%;
-            margin-left: -73px;
-        }
         body {
-            height: 100%;
-            background: #fafafa;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f0ede6, #ffffff);
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            color: #777;
-            font-weight: 300;
+            color: #1f2937;
         }
         h1 {
-            font-weight: lighter;
-            letter-spacing: normal;
-            font-size: 3rem;
-            margin-top: 0;
-            margin-bottom: 0;
-            color: #222;
+            font-size: 64px;
+            margin: 0;
+            color: #3a6ef0;
         }
         .wrap {
-            max-width: 1024px;
-            margin: 5rem auto;
-            padding: 2rem;
-            background: #fff;
+            width: min(720px, calc(100% - 32px));
+            padding: 40px 36px;
+            background: #ffffff;
             text-align: center;
-            border: 1px solid #efefef;
-            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            box-shadow: 0 18px 60px rgba(15, 23, 42, 0.08);
             position: relative;
         }
-        pre {
-            white-space: normal;
-            margin-top: 1.5rem;
-        }
-        code {
-            background: #fafafa;
-            border: 1px solid #efefef;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            display: block;
-        }
         p {
-            margin-top: 1.5rem;
-        }
-        .footer {
-            margin-top: 2rem;
-            border-top: 1px solid #efefef;
-            padding: 1em 2em 0 2em;
-            font-size: 85%;
-            color: #999;
-        }
-        a:active,
-        a:link,
-        a:visited {
-            color: #dd4814;
+            margin: 14px 0 0;
+            color: #6b7280;
+            line-height: 1.7;
         }
         .logout-discrete {
             position: absolute;
@@ -78,6 +47,24 @@
             padding: 0.2rem 0.5rem;
             border-radius: 4px;
             border: 1px solid #eee;
+        }
+        .subtitle {
+            margin-top: 10px;
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
+        }
+        .actions {
+            margin-top: 24px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 12px;
+            background: #3a6ef0;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
         }
     </style>
 </head>
@@ -93,14 +80,18 @@
     <?php endif; ?>
     <div class="wrap">
         <h1>404</h1>
+        <div class="subtitle">Page introuvable</div>
 
         <p>
             <?php if (ENVIRONMENT !== 'production') : ?>
                 <?= nl2br(esc($message)) ?>
             <?php else : ?>
-                <?= lang('Errors.sorryCannotFind') ?>
+                Cette page n existe pas ou a ete deplacee.
             <?php endif; ?>
         </p>
+        <div class="actions">
+            <a class="btn" href="<?= esc(site_url('/')) ?>">Retour a l accueil</a>
+        </div>
     </div>
 </body>
 </html>

@@ -5,14 +5,18 @@ $initials = strtoupper(substr((string) session('user_prenom'), 0, 1) . substr((s
 <nav class="navbar">
     <a href="<?= site_url('suggestions') ?>" class="navbar-logo">Re<span>gime</span></a>
     <ul class="navbar-links">
-        <li><a href="<?= site_url('suggestions') ?>" class="<?= str_contains($currentUri, 'suggestions') ? 'active' : '' ?>">Suggestions</a></li>
-        <li><a href="<?= site_url('portefeuille') ?>" class="<?= str_contains($currentUri, 'portefeuille') ? 'active' : '' ?>">Portefeuille</a></li>
+        <li><a href="<?= site_url('suggestions') ?>" class="<?= str_contains($currentUri, 'suggestions') ? 'active' : '' ?>">Home</a></li>
+        <!-- <li><a href="<?= site_url('portefeuille') ?>" class="<?= str_contains($currentUri, 'portefeuille') ? 'active' : '' ?>">Portefeuille</a></li> -->
     </ul>
     <div class="navbar-wallet">
-        <div>
-            <div class="label">Solde</div>
-            <div class="amount"><?= esc(number_format((float) (session('solde') ?? 0), 2, ',', ' ')) ?> Ar</div>
-        </div>
+        <a href="<?= site_url('portefeuille') ?>" class="<?= str_contains($currentUri, 'portefeuille') ? 'active' : '' ?>">
+
+            <div>
+                <div class="label">Solde</div>
+                <div class="amount"><?= esc(number_format((float) (session('solde') ?? 0), 2, ',', ' ')) ?> Ar</div>
+            </div>
+        </a>
+
         <?php if (session('is_gold')): ?>
             <span class="badge-gold">⭐ Gold</span>
         <?php endif; ?>

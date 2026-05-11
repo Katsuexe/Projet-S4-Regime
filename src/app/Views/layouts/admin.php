@@ -17,10 +17,54 @@
     <link href="<?= base_url('niceadmin/assets/vendor/simple-datatables/style.css') ?>" rel="stylesheet">
     <link href="<?= base_url('niceadmin/assets/css/style.css') ?>" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .table {
+            vertical-align: middle;
+        }
+
+        .table td,
+        .table th {
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 768px) {
+            #main {
+                padding: 74px 12px 40px;
+            }
+
+            .pagetitle h1 {
+                font-size: 1.35rem;
+            }
+
+            .card-body {
+                padding: 16px 12px;
+            }
+
+            .table,
+            .datatable-table {
+                min-width: 720px;
+            }
+
+            .card-body {
+                overflow-x: auto;
+            }
+
+            .d-flex.justify-content-end,
+            .d-flex.justify-content-between {
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                white-space: normal;
+            }
+        }
+    </style>
 </head>
 <body>
     <?= view('partials/navbar_admin', ['pageTitle' => $title ?? 'Espace interne']) ?>
     <main id="main" class="main">
+        <?= view('partials/flash_messages') ?>
         <?= $this->renderSection('content') ?>
     </main>
     <footer id="footer" class="footer">

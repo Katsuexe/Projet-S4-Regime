@@ -23,6 +23,7 @@ $routes->get($authGroups->hiddenLoginRoutes['coach'], 'Auth\LoginController::coa
 $routes->post($authGroups->hiddenLoginRoutes['coach'], 'Auth\LoginController::coachLogin');
 $routes->post('espace-securise/admin/sortie', 'Auth\LoginController::adminLogout');
 $routes->post('espace-securise/coach/sortie', 'Auth\LoginController::coachLogout');
+$routes->post('ajax/imc', 'Front\ImcController::calculerImc');
 
 $routes->group('', ['filter' => 'auth'], static function (RouteCollection $routes): void {
     $routes->get('profil', 'Front\ProfilController::index');
@@ -32,6 +33,7 @@ $routes->group('', ['filter' => 'auth'], static function (RouteCollection $route
     $routes->get('suggestions', 'Front\RegimeController::suggestions');
     $routes->post('souscrire', 'Front\RegimeController::souscrire');
     $routes->get('portefeuille', 'Front\PorteMonnaieController::index');
+    $routes->get('export-pdf/(:num)', 'Front\PdfController::export/$1');
     $routes->post('ajax/code', 'Front\PorteMonnaieController::redeemCode');
     $routes->post('ajax/gold', 'Front\PorteMonnaieController::activateGold');
 });
@@ -41,6 +43,7 @@ $routes->group('admin', ['filter' => 'admin'], static function (RouteCollection 
     
     // Regimes
     $routes->get('regimes', 'Admin\RegimeAdminController::index');
+    $routes->get('regimes/export-csv', 'Admin\RegimeAdminController::exportCsv');
     $routes->get('regimes/creer', 'Admin\RegimeAdminController::creer');
     $routes->post('regimes/store', 'Admin\RegimeAdminController::store');
     $routes->get('regimes/modifier/(:num)', 'Admin\RegimeAdminController::modifier/$1');
@@ -49,6 +52,7 @@ $routes->group('admin', ['filter' => 'admin'], static function (RouteCollection 
     
     // Activites
     $routes->get('activites', 'Admin\ActiviteAdminController::index');
+    $routes->get('activites/export-csv', 'Admin\ActiviteAdminController::exportCsv');
     $routes->get('activites/creer', 'Admin\ActiviteAdminController::creer');
     $routes->post('activites/store', 'Admin\ActiviteAdminController::store');
     $routes->get('activites/modifier/(:num)', 'Admin\ActiviteAdminController::modifier/$1');
@@ -57,6 +61,7 @@ $routes->group('admin', ['filter' => 'admin'], static function (RouteCollection 
     
     // Codes
     $routes->get('codes', 'Admin\CodeAdminController::index');
+    $routes->get('codes/export-csv', 'Admin\CodeAdminController::exportCsv');
     $routes->get('codes/creer', 'Admin\CodeAdminController::creer');
     $routes->post('codes/store', 'Admin\CodeAdminController::store');
     

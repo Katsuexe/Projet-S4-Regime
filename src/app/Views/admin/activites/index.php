@@ -19,7 +19,10 @@
       <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
   <?php endif; ?>
 
-  <div class="d-flex justify-content-end mb-3">
+  <div class="d-flex justify-content-end mb-3 gap-2 flex-wrap">
+    <a href="<?= site_url('admin/activites/export-csv') ?>" class="btn btn-outline-success">
+      <i class="bi bi-download me-1"></i> Export CSV
+    </a>
     <a href="<?= site_url('admin/activites/creer') ?>" class="btn btn-primary">
       <i class="bi bi-plus-circle me-1"></i> Nouvelle activité
     </a>
@@ -42,16 +45,16 @@
         <tbody>
           <?php foreach ($activites as $a): ?>
           <tr>
-            <td><?= $a['id'] ?></td>
+            <td><?= esc((string) $a['id']) ?></td>
             <td><strong><?= esc($a['nom']) ?></strong></td>
             <td><span class="badge bg-danger"><?= esc($a['calories_h']) ?> kcal/h</span></td>
             <td><?= esc($a['duree_min']) ?> min</td>
             <td><?= esc($a['description']) ?></td>
             <td>
-              <a href="<?= site_url('admin/activites/modifier/'.$a['id']) ?>" class="btn btn-sm btn-outline-primary">
+              <a href="<?= site_url('admin/activites/modifier/' . $a['id']) ?>" class="btn btn-sm btn-outline-primary">
                 <i class="bi bi-pencil"></i>
               </a>
-              <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalSuppr" data-id="<?= $a['id'] ?>" data-nom="<?= esc($a['nom']) ?>" data-route="admin/activites/supprimer/">
+              <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalSuppr" data-id="<?= esc((string) $a['id']) ?>" data-nom="<?= esc($a['nom']) ?>" data-route="admin/activites/supprimer/">
                 <i class="bi bi-trash"></i>
               </button>
             </td>

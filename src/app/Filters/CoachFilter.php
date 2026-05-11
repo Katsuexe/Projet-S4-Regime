@@ -13,6 +13,7 @@ class CoachFilter implements FilterInterface
     {
         if (! session()->get('user_id')) {
             $config = config(AuthGroups::class);
+            $this->rememberIntendedUrl($request, 'coach');
 
             return redirect()->to('/' . $config->hiddenLoginRoutes['coach'])->with('error', 'Connectez-vous avec un compte coach.');
         }
@@ -26,5 +27,25 @@ class CoachFilter implements FilterInterface
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
+    }
+
+    private function rememberIntendedUrl(RequestInterface $request, string $role): void
+    {
+        if (strtoupper($request->getMethod()) !== 'GET') {
+            return;
+        }
+
+        $path = trim($request->getUri()->getPath(), '/');
+        if ($path === '') {
+            return;
+        }
+
+        $query = $request->getUri()->getQuery();
+        $target = '/' . $path . ($query !== '' ? '?' . $query : '');
+
+        session()->set([
+            'intended_url' => $target,
+            'intended_role' => $role,
+        ]);
     }
 }

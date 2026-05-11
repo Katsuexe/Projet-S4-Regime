@@ -7,9 +7,9 @@ $currentUri = service('uri')->getPath();
 ?>
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-        <a href="<?= $dashboardUrl ?>" class="logo d-flex align-items-center">
+        <a href="<?= esc($dashboardUrl) ?>" class="logo d-flex align-items-center">
             <img src="<?= base_url('niceadmin/assets/img/logo.png') ?>" alt="">
-            <span class="d-none d-lg-block"><?= $isCoach ? 'Coach' : 'Admin' ?></span>
+            <span class="d-none d-lg-block"><?= esc($isCoach ? 'Coach' : 'Admin') ?></span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
@@ -28,14 +28,14 @@ $currentUri = service('uri')->getPath();
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="<?= $dashboardUrl ?>">
+                        <a class="dropdown-item d-flex align-items-center" href="<?= esc($dashboardUrl) ?>">
                             <i class="bi bi-grid"></i>
                             <span>Tableau de bord</span>
                         </a>
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
-                        <form method="post" action="<?= $logoutUrl ?>">
+                        <form method="post" action="<?= esc($logoutUrl) ?>">
                             <?= csrf_field() ?>
                             <button type="submit" class="dropdown-item d-flex align-items-center" style="border:0;background:transparent;">
                                 <i class="bi bi-box-arrow-right"></i>
@@ -52,7 +52,7 @@ $currentUri = service('uri')->getPath();
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link <?= ($currentUri === 'admin' || $currentUri === 'coach') ? '' : 'collapsed' ?>" href="<?= $dashboardUrl ?>">
+            <a class="nav-link <?= ($currentUri === 'admin' || $currentUri === 'coach') ? '' : 'collapsed' ?>" href="<?= esc($dashboardUrl) ?>">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>

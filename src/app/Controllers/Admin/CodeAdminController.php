@@ -21,6 +21,35 @@ class CodeAdminController extends BaseController
             'codes' => $codes
         ]);
     }
+
+    public function exportCsv()
+    {
+        $db = \Config\Database::connect();
+
+        $codes = $db->query('
+            SELECT c.id, c.code, c.montant, c.is_used, u.prenom, u.nom, c.used_at
+            FROM codes c
+            LEFT JOIN users u ON u.id = c.used_by
+            ORDER BY c.id DESC
+        ')->getResultArray();
+
+        $lines = [
+            ['ID', 'Code', 'Montant', 'Statut', 'Utilise par', 'Date utilisation'],
+        ];
+
+        foreach ($codes as $code) {
+            $lines[] = [
+                (string) $code['id'],
+                (string) $code['code'],
+                number_format((float) $code['montant'], 2, '.', ''),
+                (int) $code['is_used'] === 1 ? 'Utilise' : 'Libre',
+                (int) $code['is_used'] === 1 ? trim(($code['prenom'] ?? '') . ' ' . ($code['nom'] ?? '')) : '',
+                (string) ($code['used_at'] ?? ''),
+            ];
+        }
+
+        return $this->csvResponse('codes-promos-' . date('Y-m-d') . '.csv', $lines);
+    }
     
     public function creer()
     {
@@ -60,5 +89,24 @@ class CodeAdminController extends BaseController
         }
 
         return redirect()->to(site_url('admin/codes'))->with('success', "$qte codes générés avec succès.");
+    }
+
+    private function csvResponse(string $filename, array $lines)
+    {
+        $handle = fopen('php://temp', 'r+');
+        fwrite($handle, "\xEF\xBB\xBF");
+
+        foreach ($lines as $line) {
+            fputcsv($handle, $line, ';');
+        }
+
+        rewind($handle);
+        $csv = stream_get_contents($handle);
+        fclose($handle);
+
+        return $this->response
+            ->setHeader('Content-Type', 'text/csv; charset=UTF-8')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($csv);
     }
 }

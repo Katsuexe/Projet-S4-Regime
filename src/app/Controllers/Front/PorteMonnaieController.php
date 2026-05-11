@@ -129,7 +129,7 @@ class PorteMonnaieController extends BaseController
 
     private function respondJson(array $payload, int $statusCode = 200)
     {
-        $payload['csrf'] = service('security')->getCSRFHash();
+        $payload['csrf'] = csrf_hash();
 
         return $this->response->setStatusCode($statusCode)->setJSON($payload);
     }

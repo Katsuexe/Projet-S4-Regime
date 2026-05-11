@@ -6,7 +6,7 @@
 $initials = strtoupper(substr((string) ($user['prenom'] ?? ''), 0, 1) . substr((string) ($user['nom'] ?? ''), 0, 1));
 $imcPosition = max(0, min(100, ((float) ($imc ?? 0) / 40) * 100));
 ?>
-<div class="page-content">
+<div class="page-content" data-imc-url="<?= site_url('ajax/imc') ?>">
     <div class="page-header">
         <div class="page-header-text">
             <div class="kicker">Mon espace</div>

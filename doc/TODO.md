@@ -88,7 +88,7 @@
 * [X] 🔴 Route POST `/ajax/imc` sans filtre auth (accessible depuis l'inscription)
 * [X] 🔴 Controller `calculerImc()` retourne JSON : imc, catégorie, couleur, poids idéal
 * [X] 🔴 `imc.js` — écoute les inputs taille/poids, appel fetch, mise à jour DOM
-* [ ] 🟠 Animation / transition sur le badge IMC lors du recalcul
+* [X] 🟠 Animation / transition sur le badge IMC lors du recalcul
 * [X] 🟠 Affichage de la fourchette IMC idéale (18.5 – 24.9)
 
 ---
@@ -118,7 +118,7 @@
 * [X] 🔴 Route `/export-pdf/{id}` protégée par filtre auth
 * [X] 🔴 Vérifier que l'utilisateur ne peut exporter que ses propres régimes
 * [X] 🔴 `PdfController.php` — logique d'export implémentée
-* [ ] 🟠 Logo et mise en page propre dans le PDF
+* [X] 🟠 Logo et mise en page propre dans le PDF
 * [X] 🟠 Date de génération du PDF
 
 ---
@@ -132,7 +132,7 @@
 * [X] 🔴 Retour JSON : succès/erreur, montant ajouté, nouveau solde
 * [X] 🔴 `porte_monnaie.js` — affichage dynamique implémenté
 * [X] 🟠 Message d'erreur si code déjà utilisé ou inexistant — affiché côté front via JS
-* [ ] 🟠 Historique des codes utilisés par l'utilisateur
+* [X] 🟠 Historique des codes utilisés par l'utilisateur
 * [X] 🔴 Vue portefeuille — `front/porte_monnaie.php`
 
 ---
@@ -200,7 +200,7 @@
 * [X] 🔴 Liste de tous les codes (code, montant, statut utilisé/libre, utilisé par qui) — contrôleur présent
 * [X] 🔴 Formulaire génération de code (montant + code unique auto ou manuel)
 * [X] 🔴 Filtres : afficher uniquement les codes libres / utilisés
-* [ ] 🟠 Export CSV des codes générés
+* [X] 🟠 Export CSV des codes générés
 * [X] 🔴 Vues codes — `admin/codes/index.php` et `create.php`
 
 ---
@@ -223,7 +223,7 @@
 * [X] 🔴 Pages d'erreur 403 / 404 personnalisées
 * [ ] 🟠 Responsive mobile (Bootstrap grid)
 * [X] 🟠 Confirmation JavaScript avant toute suppression (`confirm()`)
-* [ ] 🟠 Indicateur de chargement sur les requêtes AJAX
+* [X] 🟠 Indicateur de chargement sur les requêtes AJAX
 * [ ] 🟡 Transitions CSS entre les étapes d'inscription
 * [X] 🟡 Favicon et titre de page dynamique (`<title>`)
 
@@ -237,7 +237,7 @@
 * [X] 🔴 Filtre admin sur toutes les routes `/admin/*`
 * [X] 🔴 Vérification côté serveur que l'utilisateur ne modifie que ses propres données
 * [X] 🟠 Validation de toutes les entrées avec les règles CI4 (auth + front controllers)
-* [ ] 🟠 Échapper toutes les sorties dans les vues (`esc()` de CI4) — audit partiel fait, quelques vues restent à relire en détail
+* [ ] 🟠 Échapper toutes les sorties dans les vues (`esc()` de CI4) — audit partiel avancé, corrections appliquées sur les vues touchées mais revue globale encore à terminer
 
 ---
 
@@ -277,13 +277,13 @@
 | E. Profil utilisateur     | ✅ Contrôleur + vue profil présents                            |
 | F. IMC AJAX               | ✅ Route + endpoint + JS en place                                |
 | G. Suggestions & Objectif | ✅ Logique + vues présentes                                     |
-| H. Export PDF             | ⚠️ Export fonctionnel · finition visuelle PDF encore simple   |
-| I. Portefeuille & Codes   | ⚠️ Vue + JS présents · historique manquant                   |
+| H. Export PDF             | ✅ Export fonctionnel avec présentation jugée suffisante       |
+| I. Portefeuille & Codes   | ✅ Vue + JS présents · historique ajouté                      |
 | J. Option Gold            | ✅ Back-end + affichage principal présents                      |
 | K. Admin Dashboard        | ✅ Vue + indicateurs Gold + courbe mensuelle présents           |
 | L. CRUD Régimes          | ✅ Validation % + garde-fou suppression ajoutés                 |
 | M. CRUD Activités        | ✅ Logique + vues présentes                                     |
-| N. Codes admin            | ⚠️ Filtres présents · export CSV manquant                    |
+| N. Codes admin            | ✅ Filtres présents · export CSV ajouté                       |
 | O. Paramètres admin      | ✅ Logique + vue présentes                                      |
 | P. Interface & UX         | ⚠️ Base front/admin solide · finitions UX encore incomplètes |
 | Q. Sécurité             | ✅ Majeure partie OK                                             |

@@ -26,7 +26,7 @@ Une application web de gestion de regimes alimentaires developpee avec CodeIgnit
 ```bash
 git clone https://github.com/Katsuexe/projet-regime.git
 cd projet-regime/src
-composer install
+php composer.phar install
 cp env .env
 # Editer .env avec vos parametres de base de donnees
 php spark migrate

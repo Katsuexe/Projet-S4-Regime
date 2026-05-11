@@ -43,6 +43,7 @@ $routes->group('admin', ['filter' => 'admin'], static function (RouteCollection 
     
     // Regimes
     $routes->get('regimes', 'Admin\RegimeAdminController::index');
+    $routes->get('regimes/export-csv', 'Admin\RegimeAdminController::exportCsv');
     $routes->get('regimes/creer', 'Admin\RegimeAdminController::creer');
     $routes->post('regimes/store', 'Admin\RegimeAdminController::store');
     $routes->get('regimes/modifier/(:num)', 'Admin\RegimeAdminController::modifier/$1');
@@ -51,6 +52,7 @@ $routes->group('admin', ['filter' => 'admin'], static function (RouteCollection 
     
     // Activites
     $routes->get('activites', 'Admin\ActiviteAdminController::index');
+    $routes->get('activites/export-csv', 'Admin\ActiviteAdminController::exportCsv');
     $routes->get('activites/creer', 'Admin\ActiviteAdminController::creer');
     $routes->post('activites/store', 'Admin\ActiviteAdminController::store');
     $routes->get('activites/modifier/(:num)', 'Admin\ActiviteAdminController::modifier/$1');
@@ -59,6 +61,7 @@ $routes->group('admin', ['filter' => 'admin'], static function (RouteCollection 
     
     // Codes
     $routes->get('codes', 'Admin\CodeAdminController::index');
+    $routes->get('codes/export-csv', 'Admin\CodeAdminController::exportCsv');
     $routes->get('codes/creer', 'Admin\CodeAdminController::creer');
     $routes->post('codes/store', 'Admin\CodeAdminController::store');
     

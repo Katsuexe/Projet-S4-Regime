@@ -20,6 +20,43 @@ class RegimeAdminController extends BaseController
             'regimes' => $regimes
         ]);
     }
+
+    public function exportCsv()
+    {
+        $db = \Config\Database::connect();
+        $regimes = $db->table('regimes')->orderBy('id', 'DESC')->get()->getResultArray();
+
+        $lines = [
+            ['ID', 'Nom', 'Description', '% Viande', '% Poisson', '% Volaille', 'Delta poids min', 'Delta poids max', 'Durees'],
+        ];
+
+        foreach ($regimes as $regime) {
+            $durees = $db->table('regime_durees')
+                ->where('regime_id', $regime['id'])
+                ->orderBy('duree_jours', 'ASC')
+                ->get()
+                ->getResultArray();
+
+            $dureesLabel = array_map(
+                static fn(array $duree): string => $duree['duree_jours'] . 'j: ' . number_format((float) $duree['prix'], 2, '.', '') . ' Ar',
+                $durees
+            );
+
+            $lines[] = [
+                (string) $regime['id'],
+                (string) $regime['nom'],
+                (string) $regime['description'],
+                (string) $regime['pct_viande'],
+                (string) $regime['pct_poisson'],
+                (string) $regime['pct_volaille'],
+                (string) $regime['delta_poids_min'],
+                (string) $regime['delta_poids_max'],
+                implode(' | ', $dureesLabel),
+            ];
+        }
+
+        return $this->csvResponse('regimes-' . date('Y-m-d') . '.csv', $lines);
+    }
     
     public function creer()
     {
@@ -183,5 +220,24 @@ class RegimeAdminController extends BaseController
         }
 
         return null;
+    }
+
+    private function csvResponse(string $filename, array $lines)
+    {
+        $handle = fopen('php://temp', 'r+');
+        fwrite($handle, "\xEF\xBB\xBF");
+
+        foreach ($lines as $line) {
+            fputcsv($handle, $line, ';');
+        }
+
+        rewind($handle);
+        $csv = stream_get_contents($handle);
+        fclose($handle);
+
+        return $this->response
+            ->setHeader('Content-Type', 'text/csv; charset=UTF-8')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($csv);
     }
 }

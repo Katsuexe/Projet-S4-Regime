@@ -19,7 +19,10 @@
       <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
   <?php endif; ?>
 
-  <div class="d-flex justify-content-end mb-3">
+  <div class="d-flex justify-content-end mb-3 gap-2 flex-wrap">
+    <a href="<?= site_url('admin/activites/export-csv') ?>" class="btn btn-outline-success">
+      <i class="bi bi-download me-1"></i> Export CSV
+    </a>
     <a href="<?= site_url('admin/activites/creer') ?>" class="btn btn-primary">
       <i class="bi bi-plus-circle me-1"></i> Nouvelle activité
     </a>

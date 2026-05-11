@@ -15,6 +15,28 @@ class ActiviteAdminController extends BaseController
             'activites' => $activites
         ]);
     }
+
+    public function exportCsv()
+    {
+        $db = \Config\Database::connect();
+        $activites = $db->table('activites')->orderBy('id', 'DESC')->get()->getResultArray();
+
+        $lines = [
+            ['ID', 'Nom', 'Calories par heure', 'Duree recommandee (min)', 'Description'],
+        ];
+
+        foreach ($activites as $activite) {
+            $lines[] = [
+                (string) $activite['id'],
+                (string) $activite['nom'],
+                (string) $activite['calories_h'],
+                (string) $activite['duree_min'],
+                (string) $activite['description'],
+            ];
+        }
+
+        return $this->csvResponse('activites-' . date('Y-m-d') . '.csv', $lines);
+    }
     
     public function creer()
     {
@@ -78,5 +100,24 @@ class ActiviteAdminController extends BaseController
         } else {
             return redirect()->to(site_url('admin/activites'))->with('error', 'Impossible de supprimer cette activité (utilisée).');
         }
+    }
+
+    private function csvResponse(string $filename, array $lines)
+    {
+        $handle = fopen('php://temp', 'r+');
+        fwrite($handle, "\xEF\xBB\xBF");
+
+        foreach ($lines as $line) {
+            fputcsv($handle, $line, ';');
+        }
+
+        rewind($handle);
+        $csv = stream_get_contents($handle);
+        fclose($handle);
+
+        return $this->response
+            ->setHeader('Content-Type', 'text/csv; charset=UTF-8')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($csv);
     }
 }

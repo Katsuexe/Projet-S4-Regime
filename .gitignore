@@ -69,3 +69,4 @@ composer.lock
 conseption/Passwords.csv
 
 src/writable/
+src/vendor/

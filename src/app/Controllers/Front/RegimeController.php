@@ -21,7 +21,31 @@ class RegimeController extends BaseController
 
     public function choisir()
     {
-        return redirect()->to('/suggestions');
+        $userId = session('user_id');
+        if (! $userId) {
+            return redirect()->to('/connexion')->with('error', 'Veuillez vous connecter pour modifier votre objectif.');
+        }
+
+        $rules = [
+            'objectif' => 'required|in_list[augmenter,reduire,ideal]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $objectif = $this->request->getPost('objectif');
+
+        $userSanteModel = new UserSanteModel();
+        $existing = $userSanteModel->where('user_id', $userId)->first();
+
+        if ($existing) {
+            $userSanteModel->update($existing['id'], ['objectif' => $objectif]);
+        } else {
+            $userSanteModel->insert(['user_id' => $userId, 'objectif' => $objectif]);
+        }
+
+        return redirect()->to('/profil')->with('success', 'Objectif mis a jour.');
     }
 
     public function souscrire()
@@ -115,21 +139,20 @@ class RegimeController extends BaseController
         $regimeDureeModel = new RegimeDureeModel();
         $regimes = $regimeModel->orderBy('id', 'ASC')->findAll();
 
-        foreach ($regimes as &$regime) {
-            $regime['durees'] = $regimeDureeModel
-                ->where('regime_id', $regime['id'])
-                ->orderBy('duree_jours', 'ASC')
-                ->findAll();
-        }
-        unset($regime);
-
         $activites = (new ActiviteModel())->orderBy('nom', 'ASC')->findAll();
 
+        $subscriptions = [];
         $activeRegimeIds = [];
         if ($userId) {
             $userRegimeModel = new UserRegimeModel();
-            $subscriptions = $userRegimeModel->where('user_id', $userId)->findAll();
+            $subscriptions = $userRegimeModel->where('user_id', $userId)->orderBy('date_debut', 'DESC')->findAll();
+            $regimeIds = array_unique(array_filter(array_column($subscriptions, 'regime_id')));
             $dureeIds = array_unique(array_filter(array_column($subscriptions, 'regime_duree_id')));
+            $regimeMap = [];
+            if (! empty($regimeIds)) {
+                $regimeRows = $regimeModel->whereIn('id', $regimeIds)->findAll();
+                $regimeMap = array_column($regimeRows, 'nom', 'id');
+            }
             $durees = [];
             if (! empty($dureeIds)) {
                 $durees = $regimeDureeModel->whereIn('id', $dureeIds)->findAll();
@@ -137,27 +160,74 @@ class RegimeController extends BaseController
             $dureesById = array_column($durees, null, 'id');
             $today = strtotime(date('Y-m-d'));
 
-            foreach ($subscriptions as $subscription) {
+            foreach ($subscriptions as &$subscription) {
                 $duree = $dureesById[$subscription['regime_duree_id']] ?? null;
-                $endTimestamp = 0;
+                $subscription['regime_nom'] = $regimeMap[$subscription['regime_id']] ?? 'Programme';
+                $subscription['duree_label'] = $duree ? ((string) $duree['duree_jours'] . ' j') : '-';
+                $subscription['date_fin'] = '-';
+                $subscription['active'] = false;
+
                 if (! empty($subscription['date_debut']) && $duree) {
                     $startTimestamp = strtotime($subscription['date_debut']);
                     $endTimestamp = $startTimestamp ? strtotime('+' . (int) $duree['duree_jours'] . ' days', $startTimestamp) : 0;
+                    if ($endTimestamp) {
+                        $subscription['date_fin'] = date('Y-m-d', $endTimestamp);
+                        $subscription['active'] = $today <= $endTimestamp;
+                    }
                 }
-                if ($endTimestamp && $today <= $endTimestamp) {
+
+                if ($subscription['active']) {
                     $activeRegimeIds[$subscription['regime_id']] = true;
                 }
+            }
+            unset($subscription);
+        }
+
+        $regimeIds = array_unique(array_filter(array_column($regimes, 'id')));
+        $dureesByRegime = [];
+        if (! empty($regimeIds)) {
+            $durees = $regimeDureeModel->whereIn('regime_id', $regimeIds)->orderBy('duree_jours', 'ASC')->findAll();
+            foreach ($durees as $duree) {
+                $dureesByRegime[$duree['regime_id']][] = $duree;
             }
         }
 
         foreach ($regimes as &$regime) {
-            $regime['durees'] = $regimeDureeModel
-                ->where('regime_id', $regime['id'])
-                ->orderBy('duree_jours', 'ASC')
-                ->findAll();
+            $regime['durees'] = $dureesByRegime[$regime['id']] ?? [];
             $regime['hasActiveSubscription'] = ! empty($activeRegimeIds[$regime['id']]);
         }
         unset($regime);
+
+        $objectif = $sante['objectif'] ?? '';
+        if (in_array($objectif, ['augmenter', 'reduire', 'ideal'], true)) {
+            $scored = [];
+            foreach ($regimes as $index => $regime) {
+                $deltaMin = (float) ($regime['delta_poids_min'] ?? 0);
+                $deltaMax = (float) ($regime['delta_poids_max'] ?? 0);
+                $tag = 'ideal';
+
+                if ($deltaMin >= 0 && $deltaMax >= 0) {
+                    $tag = 'augmenter';
+                } elseif ($deltaMin <= 0 && $deltaMax <= 0) {
+                    $tag = 'reduire';
+                }
+
+                $scored[] = [
+                    'score' => $tag === $objectif ? 0 : 1,
+                    'index' => $index,
+                    'regime' => $regime,
+                ];
+            }
+
+            usort($scored, static function ($a, $b) {
+                if ($a['score'] === $b['score']) {
+                    return $a['index'] <=> $b['index'];
+                }
+                return $a['score'] <=> $b['score'];
+            });
+
+            $regimes = array_values(array_map(static fn ($item) => $item['regime'], $scored));
+        }
 
         return view('front/suggestions', [
             'title' => 'Suggestions',
@@ -166,6 +236,7 @@ class RegimeController extends BaseController
             'imc' => $imc,
             'regimes' => $regimes,
             'activites' => $activites,
+            'subscriptions' => $subscriptions,
         ]);
     }
 }

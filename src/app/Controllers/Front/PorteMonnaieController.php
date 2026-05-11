@@ -19,25 +19,25 @@ class PorteMonnaieController extends BaseController
     public function redeemCode()
     {
         if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(400)->setJSON(['success' => false, 'message' => 'Requête invalide']);
+            return $this->respondJson(['success' => false, 'message' => 'Requête invalide'], 400);
         }
 
         $json = $this->request->getJSON();
         $code = $json->code ?? '';
         if (empty($code)) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Code requis']);
+            return $this->respondJson(['success' => false, 'message' => 'Code requis']);
         }
 
         $db = \Config\Database::connect();
         $codeRow = $db->table('codes')->where('code', $code)->where('is_used', 0)->get()->getRow();
 
         if (!$codeRow) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Code invalide ou déjà utilisé']);
+            return $this->respondJson(['success' => false, 'message' => 'Code invalide ou déjà utilisé']);
         }
 
         $userId = session()->get('user_id');
         if (!$userId) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Utilisateur non connecté']);
+            return $this->respondJson(['success' => false, 'message' => 'Utilisateur non connecté']);
         }
 
         $db->transStart();
@@ -55,7 +55,7 @@ class PorteMonnaieController extends BaseController
         $db->transComplete();
 
         if ($db->transStatus() === false) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Erreur lors de la validation du code']);
+            return $this->respondJson(['success' => false, 'message' => 'Erreur lors de la validation du code']);
         }
 
         // Get new solde
@@ -64,7 +64,7 @@ class PorteMonnaieController extends BaseController
         // Update session
         session()->set('solde', $user->solde);
 
-        return $this->response->setJSON([
+        return $this->respondJson([
             'success' => true,
             'montant' => $codeRow->montant,
             'solde' => $user->solde
@@ -74,12 +74,12 @@ class PorteMonnaieController extends BaseController
     public function activateGold()
     {
         if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(400)->setJSON(['success' => false, 'message' => 'Requête invalide']);
+            return $this->respondJson(['success' => false, 'message' => 'Requête invalide'], 400);
         }
 
         $userId = session()->get('user_id');
         if (!$userId) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Utilisateur non connecté']);
+            return $this->respondJson(['success' => false, 'message' => 'Utilisateur non connecté']);
         }
 
         $db = \Config\Database::connect();
@@ -87,22 +87,22 @@ class PorteMonnaieController extends BaseController
         // Get prix_gold
         $param = $db->table('parametres')->where('cle', 'prix_gold')->get()->getRow();
         if (!$param) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Prix Gold non configuré']);
+            return $this->respondJson(['success' => false, 'message' => 'Prix Gold non configuré']);
         }
         $prixGold = (float) $param->valeur;
 
         // Get current user solde
         $user = $db->table('users')->select('solde, is_gold')->where('id', $userId)->get()->getRow();
         if (!$user) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Utilisateur introuvable']);
+            return $this->respondJson(['success' => false, 'message' => 'Utilisateur introuvable']);
         }
 
         if ($user->is_gold) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Gold déjà activé']);
+            return $this->respondJson(['success' => false, 'message' => 'Gold déjà activé']);
         }
 
         if ($user->solde < $prixGold) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Solde insuffisant']);
+            return $this->respondJson(['success' => false, 'message' => 'Solde insuffisant']);
         }
 
         $db->transStart();
@@ -114,16 +114,23 @@ class PorteMonnaieController extends BaseController
         $db->transComplete();
 
         if ($db->transStatus() === false) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Erreur lors de l\'activation Gold']);
+            return $this->respondJson(['success' => false, 'message' => 'Erreur lors de l\'activation Gold']);
         }
 
         // Update session
         session()->set(['solde' => $newSolde, 'is_gold' => true]);
 
-        return $this->response->setJSON([
+        return $this->respondJson([
             'success' => true,
             'message' => 'Gold activé ! -' . number_format($prixGold, 2, ',', ' ') . ' Ar',
             'solde' => $newSolde
         ]);
+    }
+
+    private function respondJson(array $payload, int $statusCode = 200)
+    {
+        $payload['csrf'] = service('security')->getCSRFHash();
+
+        return $this->response->setStatusCode($statusCode)->setJSON($payload);
     }
 }

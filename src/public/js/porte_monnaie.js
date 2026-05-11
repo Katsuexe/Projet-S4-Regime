@@ -1,14 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const getCookieValue = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts.pop().split(';').shift();
+  const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+  let csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
+
+  const updateCsrfToken = (token) => {
+    if (!token) {
+      return;
     }
-    return '';
+    csrfToken = token;
+    if (csrfMeta) {
+      csrfMeta.setAttribute('content', token);
+    }
   };
 
-  const getCsrfToken = () => getCookieValue('csrf_cookie_name');
+  const page = document.querySelector('[data-redeem-url]');
+  const redeemUrl = page?.dataset.redeemUrl || '/ajax/code';
+  const goldUrl = page?.dataset.goldUrl || '/ajax/gold';
 
   const button = document.getElementById('btn-valider');
   const input = document.getElementById('code-input');
@@ -28,8 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const csrfToken = getCsrfToken();
-      const response = await fetch('/ajax/code', {
+      const response = await fetch(redeemUrl, {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
@@ -41,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const data = await response.json();
+      if (data?.csrf) {
+        updateCsrfToken(data.csrf);
+      }
       result.className = `code-result ${data.success ? 'success' : 'error'}`;
       result.textContent = data.success
         ? `+${data.montant} ajoutes. Nouveau solde : ${data.solde} Ar`
@@ -68,8 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        const csrfToken = getCsrfToken();
-        const response = await fetch('/ajax/gold', {
+        const response = await fetch(goldUrl, {
           method: 'POST',
           credentials: 'same-origin',
           headers: {
@@ -81,6 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const data = await response.json();
+        if (data?.csrf) {
+          updateCsrfToken(data.csrf);
+        }
 
         if (data.success) {
           alert(data.message);

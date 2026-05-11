@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/front') ?>
 
 <?= $this->section('content') ?>
-<div class="page-content">
+<div class="page-content" data-redeem-url="<?= site_url('ajax/code') ?>" data-gold-url="<?= site_url('ajax/gold') ?>">
     <div class="page-header">
         <div class="page-header-text">
             <div class="kicker">Mon compte</div>

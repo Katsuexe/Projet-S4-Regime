@@ -27,6 +27,31 @@
         </div>
     </div>
 
+    <div class="section-title">Programmes souscrits</div>
+    <div class="card" style="margin-bottom:24px">
+        <div class="card-body">
+            <?php if (empty($subscriptions)): ?>
+                <p>Aucune souscription en cours ou passee pour le moment.</p>
+            <?php else: ?>
+                <div class="subscription-list">
+                    <?php foreach ($subscriptions as $subscription): ?>
+                        <div class="subscription-item" style="border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:14px;margin-bottom:12px">
+                            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                                <div style="font-weight:700;color:var(--text)"><?= esc($subscription['regime_nom'] ?? 'Programme') ?></div>
+                                <span style="font-size:.75rem;padding:4px 10px;border-radius:999px;color:#fff;background:<?= ! empty($subscription['active']) ? '#0f766e' : '#7b1fa2' ?>;text-transform:uppercase;letter-spacing:.04em">
+                                    <?= ! empty($subscription['active']) ? 'Actif' : 'Termine' ?>
+                                </span>
+                            </div>
+                            <div style="font-size:.9rem;color:var(--text-3);margin:8px 0 4px">
+                                Durée : <?= esc($subscription['duree_label'] ?? '-') ?> • Début : <?= esc($subscription['date_debut'] ?? '-') ?> • Fin estimée : <?= esc($subscription['date_fin'] ?? '-') ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
     <div class="section-title">Regimes proposes</div>
     <div class="regimes-grid">
         <?php foreach ($regimes as $regime): ?>

@@ -45,7 +45,7 @@
             <div class="flash flash-error"><?= esc($errors['objectif']) ?></div>
         <?php endif; ?>
         <div class="action-row">
-            <a href="<?= site_url('suggestions') ?>" class="btn-outline">Retour</a>
+            <a href="<?= site_url('profil') ?>" class="btn-outline">Retour au profil</a>
             <button type="submit" class="btn-primary">Enregistrer l'objectif</button>
         </div>
     </form>

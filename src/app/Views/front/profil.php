@@ -33,6 +33,9 @@ $imcPosition = max(0, min(100, ((float) ($imc ?? 0) / 40) * 100));
                         <div class="profil-stat"><div class="val"><?= esc((string) ($sante['taille'] ?? '-')) ?> cm</div><div class="lbl">Taille</div></div>
                         <div class="profil-stat"><div class="val"><?= esc($sante['objectif'] ?? '-') ?></div><div class="lbl">Objectif</div></div>
                     </div>
+                    <div class="action-row" style="margin-top:16px;justify-content:center">
+                        <a href="<?= site_url('objectif') ?>" class="btn-outline">Changer d'objectif</a>
+                    </div>
                 </div>
             </div>
 

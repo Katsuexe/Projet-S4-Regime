@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?= csrf_hash() ?>">
     <title><?= esc($title ?? 'Projet Regime') ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -116,6 +117,52 @@
             justify-content: center;
             margin-left: 8px;
         }
+        .navbar-user {
+            position: relative;
+            margin-left: 12px;
+        }
+        .navbar-user > summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        .navbar-user > summary::-webkit-details-marker {
+            display: none;
+        }
+        .navbar-user-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-card);
+            padding: 6px;
+            min-width: 180px;
+            z-index: 200;
+        }
+        .navbar-user-menu a,
+        .navbar-user-menu button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border: 0;
+            background: transparent;
+            border-radius: var(--radius-sm);
+            font-size: .875rem;
+            font-weight: 500;
+            color: var(--text-2);
+            text-align: left;
+            cursor: pointer;
+            font-family: var(--font);
+        }
+        .navbar-user-menu a:hover,
+        .navbar-user-menu button:hover {
+            background: var(--blue-light);
+            color: var(--blue);
+        }
+        .navbar-user-menu form { margin: 0; }
         .badge-gold {
             display: inline-flex;
             align-items: center;

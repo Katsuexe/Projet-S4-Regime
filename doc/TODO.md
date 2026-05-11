@@ -28,7 +28,7 @@
 * [X] 🔴 Écrire la migration `activites`
 * [X] 🔴 Écrire la migration `codes`
 * [X] 🔴 Écrire la migration `user_regimes` (pivot achats)
-* [ ] 🟠 Écrire la migration `parametres` (clé/valeur) — table présente dans `script.sql` mais pas de fichier migration CI4 dédié
+* [X] 🟠 Écrire la migration `parametres` (clé/valeur) — table présente dans `les script.sql` mais pas de fichier migration CI4 dédié
 * [X] 🔴 Lancer `php spark migrate` sans erreur
 * [X] 🔴 Seed : 5 utilisateurs (genres mixtes, mots de passe hashés) — `UserSeeder.php` rempli
 * [X] 🔴 Seed : 5 régimes (avec % viande / poisson / volaille remplis) — `RegimeSeeder.php` rempli
@@ -162,7 +162,7 @@
 
 ---
 
-### K bis. Back Office — Coach
+### K bis. Back Office — Coach (déprécié car non demandé)
 
 * [ ] 🟠 Définir clairement le périmètre fonctionnel du rôle coach dans les specs
 * [X] 🟠 Ajouter les routes coach dans `app/Config/Routes.php`
@@ -268,23 +268,23 @@
 
 ## Résumé de progression
 
-| Section                   | Statut global                                                    |
-| ------------------------- | ---------------------------------------------------------------- |
-| A. Init & environnement   | ✅ Quasi complet (Git/Sheet non vérifiable)                     |
-| B. Base de données       | ✅ Migrations OK · seeders CI4 présents · SQL complet         |
-| C. Authentification       | ✅ Login présent avec redirection post-auth                 |
-| D. Inscription 2 étapes  | ✅ Contrôleurs + vues + progression présents                   |
-| E. Profil utilisateur     | ✅ Contrôleur + vue profil présents                            |
-| F. IMC AJAX               | ✅ Route + endpoint + JS en place                                |
-| G. Suggestions & Objectif | ✅ Logique + vues présentes                                     |
-| H. Export PDF             | ✅ Export fonctionnel avec présentation jugée suffisante       |
-| I. Portefeuille & Codes   | ✅ Vue + JS présents · historique ajouté                      |
-| J. Option Gold            | ✅ Back-end + affichage principal présents                      |
-| K. Admin Dashboard        | ✅ Vue + indicateurs Gold + courbe mensuelle présents           |
-| L. CRUD Régimes          | ✅ Validation % + garde-fou suppression ajoutés                 |
-| M. CRUD Activités        | ✅ Logique + vues présentes                                     |
-| N. Codes admin            | ✅ Filtres présents · export CSV ajouté                       |
-| O. Paramètres admin      | ✅ Logique + vue présentes                                      |
+| Section                   | Statut global                                                                  |
+| ------------------------- | ------------------------------------------------------------------------------ |
+| A. Init & environnement   | ✅ Quasi complet (Git/Sheet non vérifiable)                                   |
+| B. Base de données       | ✅ Migrations OK · seeders CI4 présents · SQL complet                       |
+| C. Authentification       | ✅ Login présent avec redirection post-auth                                   |
+| D. Inscription 2 étapes  | ✅ Contrôleurs + vues + progression présents                                 |
+| E. Profil utilisateur     | ✅ Contrôleur + vue profil présents                                          |
+| F. IMC AJAX               | ✅ Route + endpoint + JS en place                                              |
+| G. Suggestions & Objectif | ✅ Logique + vues présentes                                                   |
+| H. Export PDF             | ✅ Export fonctionnel avec présentation jugée suffisante                     |
+| I. Portefeuille & Codes   | ✅ Vue + JS présents · historique ajouté                                    |
+| J. Option Gold            | ✅ Back-end + affichage principal présents                                    |
+| K. Admin Dashboard        | ✅ Vue + indicateurs Gold + courbe mensuelle présents                         |
+| L. CRUD Régimes          | ✅ Validation % + garde-fou suppression ajoutés                               |
+| M. CRUD Activités        | ✅ Logique + vues présentes                                                   |
+| N. Codes admin            | ✅ Filtres présents · export CSV ajouté                                     |
+| O. Paramètres admin      | ✅ Logique + vue présentes                                                    |
 | P. Interface & UX         | ✅ Base front/admin solide · responsive, loaders AJAX et transitions ajoutés |
-| Q. Sécurité             | ✅ Majeure partie OK                                             |
-| S. Livraison              | ⚠️ SQL présent · Seeds CI4 prêts · Forms manquants         |
+| Q. Sécurité             | ✅ Majeure partie OK                                                           |
+| S. Livraison              | ⚠️ SQL présent · Seeds CI4 prêts · Forms manquants                       |
